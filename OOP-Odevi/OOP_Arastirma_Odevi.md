@@ -613,3 +613,7 @@ Bu kavramları tek tek öğrenmek kolay gibi gözükse de asıl zorluk hangisini
 5. BTK Akademi, "C# Programlama Dersleri", https://www.btkakademi.gov.tr/ (Erişim Tarihi: 27.10.2026)
 
 6. Engin Demiroğ, "C# Eğitim Serisi", YouTube, https://www.youtube.com/@engindemirog (Erişim Tarihi: 26.10.2026)
+
+---
+
+**GitHub Repo:** https://github.com/hasanaliyucel-06/Web-Programciligi-lll
