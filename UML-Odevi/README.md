@@ -235,8 +235,17 @@ Detaylı C# kaynak kodları için [`KutuphaneModel.cs`](./KutuphaneModel.cs) dos
 
 ---
 
-## 7. Akademik Kaynakça
-1. Booch, G., Rumbaugh, J., & Jacobson, I. (2005). *The Unified Modeling Language User Guide.*
-2. OMG UML 2.5 Specification. (2015).
-3. Chen, P. P. (1976). *The Entity-Relationship Model—Toward a Unified View of Data.*
-4. Fowler, M. (2003). *UML Distilled (3rd Edition).*
+## 7. Kaynakça
+
+1. **Object Management Group (OMG) — Resmi UML 2.5.1 Şartnamesi:**  
+   [https://www.omg.org/spec/UML/2.5.1/](https://www.omg.org/spec/UML/2.5.1/)
+2. **Martin Fowler — UML Distilled Rehberi:**  
+   [https://martinfowler.com/books/uml.html](https://martinfowler.com/books/uml.html)
+3. **Visual Paradigm — UML Diyagram Türleri ve Kullanım Kılavuzu:**  
+   [https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-diagram-types-guide/](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-diagram-types-guide/)
+4. **GeeksforGeeks — Unified Modeling Language (UML) Giriş Kılavuzu:**  
+   [https://www.geeksforgeeks.org/unified-modeling-language-uml-introduction/](https://www.geeksforgeeks.org/unified-modeling-language-uml-introduction/)
+5. **Microsoft Learn — C# Nesne Yönelimli Programlama (OOP) Dokümantasyonu:**  
+   [https://learn.microsoft.com/tr-tr/dotnet/csharp/fundamentals/tutorials/oop](https://learn.microsoft.com/tr-tr/dotnet/csharp/fundamentals/tutorials/oop)
+6. **Mermaid JS — Resmi Dokümantasyon:**  
+   [https://mermaid.js.org/](https://mermaid.js.org/)

@@ -1,897 +1,539 @@
 <!DOCTYPE html>
-<html lang="tr" data-theme="dark">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UML Modelleme Rehberi | Use Case, ER ve Class Diyagramları</title>
-    <meta name="description" content="Web Programcılığı III — Kapsamlı UML, Use Case, ER ve Class Diyagramları Akademik İncelemesi ve C# OOP Uygulaması">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <title>Web Programcılığı III - UML Modelleme Ödevi</title>
     <!-- Mermaid CDN -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 
     <style>
-        :root {
-            --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-            --font-heading: 'Outfit', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-
-            /* Dark Theme (Default) */
-            --bg-base: #07090e;
-            --bg-surface: #0f1422;
-            --bg-card: #151c30;
-            --bg-card-hover: #1c253f;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(99, 102, 241, 0.35);
-
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-glow: rgba(99, 102, 241, 0.25);
-            --secondary: #0ea5e9;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-
-            --code-bg: #090d16;
-            --nav-bg: rgba(15, 20, 34, 0.85);
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.45);
-        }
-
-        [data-theme="light"] {
-            --bg-base: #f8fafc;
-            --bg-surface: #ffffff;
-            --bg-card: #f1f5f9;
-            --bg-card-hover: #e2e8f0;
-            --border-color: #cbd5e1;
-            --border-hover: #94a3b8;
-
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-muted: #64748b;
-
-            --primary: #4f46e5;
-            --primary-light: #6366f1;
-            --primary-glow: rgba(79, 70, 229, 0.15);
-            --secondary: #0284c7;
-            --success: #059669;
-            --warning: #d97706;
-            --danger: #dc2626;
-
-            --code-bg: #1e293b;
-            --nav-bg: rgba(255, 255, 255, 0.9);
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
-        }
-
+        /* ==========================================================
+           Web Programcılığı III - Öğrenci Ödev Sayfası Stilleri
+           Sade, temiz ve okunabilir standart CSS
+           ========================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: var(--font-main);
-            background-color: var(--bg-base);
-            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: #222;
             line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 20px 15px;
         }
 
-        /* Top Bar & Navigation */
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: var(--nav-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.85rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: var(--transition);
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .nav-brand .badge {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            font-size: 0.7rem;
-            padding: 0.25rem 0.6rem;
-            border-radius: 9999px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.92rem;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.25rem 0;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-light);
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid transparent;
-            font-family: var(--font-main);
-            text-decoration: none;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border-color: var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--bg-card);
-            border-color: var(--border-hover);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #4338ca);
-            color: #ffffff;
-            box-shadow: 0 4px 14px var(--primary-glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px var(--primary-glow);
-        }
-
-        /* Container */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem 6rem;
+            max-width: 900px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 35px 45px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        /* Hero Banner */
-        .hero {
-            position: relative;
-            padding: 3.5rem 2.5rem;
-            background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-card) 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            margin-bottom: 3.5rem;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
+        /* Başlık ve Üst Bilgi */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            pointer-events: none;
+        .header-info h1 {
+            color: #1e3a5f;
+            font-size: 1.75rem;
+            margin-bottom: 6px;
         }
 
-        .hero-tag {
+        .header-info p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .btn-print {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: inherit;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(99, 102, 241, 0.12);
-            color: var(--primary-light);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            padding: 0.35rem 0.85rem;
-            border-radius: 9999px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            margin-bottom: 1.25rem;
+            gap: 6px;
         }
 
-        .hero-title {
-            font-family: var(--font-heading);
-            font-size: 2.75rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.25rem;
-            background: linear-gradient(135deg, var(--text-primary) 30%, var(--primary-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .btn-print:hover {
+            background-color: #1d4ed8;
         }
 
-        .hero-desc {
-            font-size: 1.15rem;
-            color: var(--text-secondary);
-            max-width: 850px;
-            margin-bottom: 2rem;
-        }
-
-        .hero-stats {
+        /* Öğrenci Bilgi Kutusu */
+        .student-box {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 12px 18px;
+            margin-bottom: 25px;
+            font-size: 0.92rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.25rem;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
+            gap: 10px;
         }
 
-        .stat-card {
-            background: var(--bg-surface);
-            padding: 1.25rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
+        .student-box div strong {
+            color: #1e293b;
         }
 
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--border-hover);
+        /* İçindekiler */
+        .toc-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
         }
 
-        .stat-num {
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-light);
-            margin-bottom: 0.25rem;
+        .toc-box h3 {
+            margin-bottom: 10px;
+            color: #1e3a5f;
+            font-size: 1.05rem;
         }
 
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+        .toc-box ul {
+            list-style-type: decimal;
+            margin-left: 20px;
         }
 
-        /* Section Cards */
-        .section-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 18px;
-            padding: 2.5rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
+        .toc-box li {
+            margin-bottom: 5px;
+            font-size: 0.92rem;
         }
 
-        .section-card:hover {
-            border-color: var(--border-hover);
+        .toc-box a {
+            color: #2563eb;
+            text-decoration: none;
         }
 
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.75rem;
-            padding-bottom: 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-            flex-wrap: wrap;
-            gap: 1rem;
+        .toc-box a:hover {
+            text-decoration: underline;
         }
 
-        .section-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .section-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            background: rgba(99, 102, 241, 0.12);
-            color: var(--primary-light);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: 1.85rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .section-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
-
-        /* Content Formatting */
-        p {
-            margin-bottom: 1.2rem;
-            color: var(--text-secondary);
-        }
-
-        p strong {
-            color: var(--text-primary);
+        /* Başlıklar ve Metinler */
+        h2 {
+            color: #1e3a5f;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.35rem;
         }
 
         h3 {
-            font-family: var(--font-heading);
-            font-size: 1.35rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 1.75rem 0 0.85rem;
+            color: #334155;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
         }
 
-        /* Callout Boxes */
-        .callout {
-            background: var(--bg-card);
-            border-left: 4px solid var(--primary);
-            padding: 1.25rem 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 1.5rem 0;
-            border-top: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+        p {
+            margin-bottom: 14px;
+            color: #334155;
+            text-align: justify;
         }
 
-        .callout-title {
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.35rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        ul, ol {
+            margin-left: 22px;
+            margin-bottom: 15px;
+            color: #334155;
         }
 
-        .callout p {
-            margin-bottom: 0;
+        li {
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0f172a;
+        }
+
+        /* Vurgu Kutusu (Notlar) */
+        blockquote {
+            border-left: 4px solid #2563eb;
+            background-color: #eff6ff;
+            color: #1e40af;
+            padding: 12px 18px;
+            margin: 18px 0;
+            border-radius: 0 4px 4px 0;
             font-size: 0.95rem;
         }
 
-        /* Diagram Box */
+        blockquote strong {
+            color: #1e3a8a;
+        }
+
+        /* Diyagram Kapsayıcısı */
         .diagram-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 2rem 1.5rem;
-            margin: 2rem 0;
+            background-color: #fafafa;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 20px 10px;
+            margin: 20px 0 8px;
             overflow-x: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 250px;
-            transition: var(--transition);
-        }
-
-        .diagram-container:hover {
-            border-color: var(--border-hover);
-        }
-
-        .mermaid {
-            width: 100%;
             text-align: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Tables */
-        .table-responsive {
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+        .diagram-caption {
+            text-align: center;
+            font-size: 0.88rem;
+            color: #64748b;
+            font-style: italic;
+            margin-bottom: 25px;
         }
 
+        /* Tablolar */
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
-            font-size: 0.93rem;
+            margin: 18px 0;
+            font-size: 0.92rem;
         }
 
-        thead {
-            background: var(--bg-card);
-            border-bottom: 2px solid var(--border-color);
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 9px 12px;
+            text-align: left;
         }
 
         th {
-            padding: 1rem 1.25rem;
-            font-family: var(--font-heading);
+            background-color: #f1f5f9;
+            color: #1e293b;
             font-weight: 600;
-            color: var(--text-primary);
         }
 
-        td {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-secondary);
+        tr:nth-child(even) {
+            background-color: #f8fafc;
         }
 
-        tr:last-child td {
-            border-bottom: none;
+        tr:hover {
+            background-color: #f1f5f9;
         }
 
-        tr:hover td {
-            background: rgba(99, 102, 241, 0.04);
-        }
-
-        .badge-pill {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--primary-light);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-
-        .badge-pill.success {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .badge-pill.warning {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        /* Code Block */
-        .code-container {
+        /* Kod Bloğu */
+        .code-box {
             position: relative;
-            background: var(--code-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            margin: 1.5rem 0;
-            overflow: hidden;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            margin: 18px 0;
         }
 
         .code-header {
+            background: #e2e8f0;
+            padding: 6px 14px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            background: rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.75rem 1.25rem;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            align-items: center;
+            font-size: 0.82rem;
+            font-family: Consolas, monospace;
+            color: #334155;
+            border-bottom: 1px solid #cbd5e1;
         }
 
-        .code-header .lang-badge {
-            color: var(--primary-light);
-            font-weight: 600;
+        .btn-copy {
+            background: #ffffff;
+            border: 1px solid #94a3b8;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #334155;
+            font-family: inherit;
+        }
+
+        .btn-copy:hover {
+            background: #f1f5f9;
         }
 
         pre {
-            padding: 1.5rem;
+            padding: 14px 18px;
             overflow-x: auto;
-            font-family: var(--font-mono);
-            font-size: 0.88rem;
-            line-height: 1.6;
-            color: #cbd5e1;
-            max-height: 550px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #1e293b;
+            max-height: 480px;
         }
 
         code {
-            font-family: var(--font-mono);
+            font-family: Consolas, 'Courier New', monospace;
+            background: #e2e8f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.9em;
         }
 
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
-            color: white;
-            padding: 0.85rem 1.5rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow-lg);
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 9999;
+        pre code {
+            background: transparent;
+            padding: 0;
         }
 
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
+        /* Kaynakça Linkleri */
+        .references-list li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .references-list a {
+            color: #2563eb;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references-list a:hover {
+            text-decoration: underline;
         }
 
         /* Footer */
         footer {
-            border-top: 1px solid var(--border-color);
-            padding: 3rem 1.5rem;
+            margin-top: 40px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            background: var(--bg-surface);
+            font-size: 0.85rem;
+            color: #64748b;
         }
 
-        footer a {
-            color: var(--primary-light);
-            text-decoration: none;
-        }
-
-        /* Print / PDF Styles */
+        /* Yazdırma / PDF Çıktı Ayarları */
         @media print {
-            .navbar, .hero-stats, .btn, .toast, .no-print {
+            body {
+                background: #ffffff;
+                padding: 0;
+            }
+            .container {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            .btn-print, .btn-copy {
                 display: none !important;
             }
-
-            body {
-                background: #ffffff !important;
-                color: #000000 !important;
-                font-size: 11pt;
-            }
-
-            .container {
-                max-width: 100% !important;
-                padding: 0 !important;
-            }
-
-            .hero {
-                border: none !important;
-                background: none !important;
-                padding: 1rem 0 !important;
-                box-shadow: none !important;
-            }
-
-            .hero-title {
-                color: #000000 !important;
-                -webkit-text-fill-color: initial !important;
-                font-size: 22pt !important;
-            }
-
-            .section-card {
-                border: 1px solid #ddd !important;
-                box-shadow: none !important;
-                page-break-inside: avoid;
-                margin-bottom: 2rem !important;
-                padding: 1.5rem !important;
-            }
-
             .diagram-container {
-                border: 1px solid #ccc !important;
-                background: #ffffff !important;
+                page-break-inside: avoid;
+                border: 1px solid #ccc;
+            }
+            pre {
+                max-height: none;
                 page-break-inside: avoid;
             }
-
-            pre {
-                max-height: none !important;
-                background: #f8f9fa !important;
-                color: #212529 !important;
-                border: 1px solid #ddd !important;
+            h2 {
+                page-break-before: auto;
             }
         }
 
-        /* Responsive Mobile */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 0.75rem 1rem;
+            .container {
+                padding: 20px;
             }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .section-card {
-                padding: 1.5rem;
-            }
-
-            .section-title {
-                font-size: 1.4rem;
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <a href="#" class="nav-brand">
-            <span>🏛️ Web Programcılığı III</span>
-            <span class="badge">UML & OOP Ödevi</span>
-        </a>
-        <ul class="nav-links">
-            <li><a href="#uml-genel">UML Nedir?</a></li>
-            <li><a href="#use-case">Use Case</a></li>
-            <li><a href="#er-diyagram">ER Diyagramı</a></li>
-            <li><a href="#class-diyagram">Class Diyagramı</a></li>
-            <li><a href="#csharp-kod">C# Kodu</a></li>
-            <li><a href="#karsilastirma">Karşılaştırma</a></li>
-        </ul>
-        <div class="nav-actions">
-            <button class="btn btn-outline" id="themeToggleBtn" title="Temayı Değiştir">
-                <span id="themeIcon">☀️</span> <span id="themeText">Aydınlık</span>
-            </button>
-            <button class="btn btn-primary" onclick="window.print()" title="PDF veya Yazıcı Çıktısı Al">
-                <span>🖨️</span> PDF / Yazdır
-            </button>
-        </div>
-    </nav>
-
     <div class="container">
 
-        <!-- Hero Banner -->
-        <header class="hero">
-            <div class="hero-tag">
-                <span>🎓</span> Akademik İnceleme & Modelleme Standartları
+        <!-- Sayfa Üst Bilgisi -->
+        <header class="header-top">
+            <div class="header-info">
+                <h1>UML Modelleme ve Sistem Tasarımı Ödevi</h1>
+                <p>Web Programcılığı III — Yazılım Mimarisi, ER ve OOP Modellemesi</p>
             </div>
-            <h1 class="hero-title">UML Modelleme Kılavuzu: Use Case, ER ve Class Diyagramları</h1>
-            <p class="hero-desc">
-                Modern yazılım mühendisliği süreçlerinde sistem gereksinimlerinin, ilişkisel veri mimarisinin ve nesne yönelimli (OOP) kod iskeletinin standart modelleme dilleriyle haritalandırılması. Örnek Kütüphane Otomasyon Sistemi ve C# .NET uygulaması ile zenginleştirilmiştir.
-            </p>
-
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <div class="stat-num">UML 2.5</div>
-                    <div class="stat-label">OMG Resmi Standardı</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-num">3 Mimari Katman</div>
-                    <div class="stat-label">Gereksinim, Veri ve Nesne Modeli</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-num">C# .NET 8</div>
-                    <div class="stat-label">SOLID Uyumlu OOP Kodu</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-num">Canlı Mermaid</div>
-                    <div class="stat-label">Vektörel Grafik Çizimleri</div>
-                </div>
+            <div>
+                <button class="btn-print" onclick="window.print()">🖨️ Sayfayı Yazdır / PDF</button>
             </div>
         </header>
 
-        <!-- Bölüm 1: UML Nedir? -->
-        <section id="uml-genel" class="section-card">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <div class="section-icon">📐</div>
-                    <div>
-                        <h2 class="section-title">1. UML (Unified Modeling Language) Nedir?</h2>
-                        <span class="section-subtitle">Yazılım Mühendisliğinde Ortak Modelleme Standartları</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Öğrenci Bilgileri -->
+        <div class="student-box">
+            <div><strong>Ders:</strong> Web Programcılığı III</div>
+            <div><strong>Öğrenci:</strong> Hasan Ali Yücel</div>
+            <div><strong>Konu:</strong> UML (Use Case, ER, Class) & C# OOP</div>
+            <div><strong>Tarih:</strong> 2026 Güz Dönemi</div>
+        </div>
 
+        <!-- İçindekiler -->
+        <nav class="toc-box">
+            <h3>İçindekiler</h3>
+            <ul>
+                <li><a href="#giris">Giriş ve UML Nedir?</a></li>
+                <li><a href="#use-case">Use Case (Kullanım Senaryosu) Diyagramı</a></li>
+                <li><a href="#er-diyagram">ER (Entity-Relationship) Diyagramı</a></li>
+                <li><a href="#class-diyagram">Class (Sınıf) Diyagramı</a></li>
+                <li><a href="#csharp-kod">C# Nesne Yönelimli Kod Örneği (KutuphaneModel.cs)</a></li>
+                <li><a href="#karsilastirma">Diyagramların Karşılaştırma Tablosu</a></li>
+                <li><a href="#kaynakca">Kaynakça (Çalışan Kaynak Bağlantıları)</a></li>
+            </ul>
+        </nav>
+
+        <!-- 1. Bölüm: UML Nedir? -->
+        <section id="giris">
+            <h2>1. UML (Unified Modeling Language) Nedir?</h2>
             <p>
-                <strong>UML (Birleşik Modelleme Dili)</strong>; yazılım yoğun sistemlerin mimarisini görselleştirmek, belirtmek (specify), inşa etmek ve belgelemek amacıyla geliştirilmiş uluslararası genel amaçlı modelleme dilidir. 1990'ların ortasında Grady Booch, Ivar Jacobson ve James Rumbaugh ("Üç Amigo") tarafından geliştirilmiş, günümüzde <strong>OMG (Object Management Group)</strong> bünyesinde ISO standardı olarak yönetilmektedir.
+                <strong>UML (Birleşik Modelleme Dili)</strong>, yazılım sistemlerinin analizini, tasarımını ve belgelenmesini standart hale getirmek için kullanılan görsel bir modelleme dilidir. Kod yazmaya başlamadan önce sistemin yapısını haritalandırmamızı sağlar. 1990'ların ortasında Grady Booch, Ivar Jacobson ve James Rumbaugh tarafından ortaya konulmuş ve <strong>OMG (Object Management Group)</strong> tarafından resmi bir standart haline getirilmiştir.
             </p>
 
-            <div class="callout">
-                <div class="callout-title">💡 Neden UML Kullanılır?</div>
-                <p>
-                    UML, kodlama başlamadan önce mimarideki mantık ve tasarım hatalarını erkenden yakalayarak <strong>teknik borcu (technical debt)</strong> minimize eder. Analistler, yazılım mimarları, geliştiriciler ve paydaşlar arasında ortak bir iletişim köprüsü ("Lingua Franca") kurar.
-                </p>
-            </div>
+            <blockquote>
+                <strong>Neden UML Kullanıyoruz?:</strong> Bir projeye doğrudan kod yazarak başlamak, plansız bir inşaata başlamaya benzer. UML diyagramları sayesinde gereksinimleri erkenden görebilir, veritabanı tablolarımızı ve sınıflar arasındaki ilişkileri baştan planlayarak tasarım hatalarını erkenden fark edebiliriz.
+            </blockquote>
 
-            <h3>UML 2.5 Diyagramlarının İki Temel Sınıfı</h3>
-            <p>UML 2.5 standardında toplam <strong>14 resmi diyagram</strong> bulunur ve iki ana kategoriye ayrılır:</p>
-            
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Kategori</th>
-                            <th>Açıklama</th>
-                            <th>İçerdiği Başlıca Diyagramlar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="badge-pill">Yapısal (Structural)</span></td>
-                            <td>Sistemin statik bileşenlerini, sınıflarını ve donanım/yazılım konfigürasyonunu modeller. Zamana bağlı değildir.</td>
-                            <td><strong>Class (Sınıf)</strong>, Object (Nesne), Component (Bileşen), Deployment (Dağıtım), Package (Paket), Composite Structure</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-pill warning">Davranışsal (Behavioral)</span></td>
-                            <td>Sistemin çalışma zamanındaki dinamik davranışını, aktör etkileşimlerini ve nesnelerin durum geçişlerini gösterir.</td>
-                            <td><strong>Use Case</strong>, Activity (Aktivite), State Machine, <em>Etkileşim Diyagramları (Sequence, Communication)</em></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <h3>UML Diyagramlarının Sınıflandırılması</h3>
+            <p>UML 2.5 standardında toplam 14 diyagram türü yer alır ve temel olarak iki ana gruba ayrılır:</p>
+            <ul>
+                <li><strong>Yapısal (Statik) Diyagramlar:</strong> Sistemin değişmeyen statik bileşenlerini ve sınıflarını gösterir. Örneğin: <em>Class (Sınıf) Diyagramı</em>, <em>Object (Nesne) Diyagramı</em>, <em>Component Diyagramı</em>.</li>
+                <li><strong>Davranışsal (Dinamik) Diyagramlar:</strong> Sistemin zaman içindeki işleyişini, aktörlerle etkileşimini ve nesnelerin durumlarını gösterir. Örneğin: <em>Use Case (Kullanım Senaryosu) Diyagramı</em>, <em>Activity Diyagramı</em>, <em>Sequence Diyagramı</em>.</li>
+            </ul>
         </section>
 
-        <!-- Bölüm 2: Use Case Diyagramı -->
-        <section id="use-case" class="section-card">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <div class="section-icon">🎭</div>
-                    <div>
-                        <h2 class="section-title">2. Use Case (Kullanım Senaryosu) Diyagramı</h2>
-                        <span class="section-subtitle">Gereksinim Analizi, Sistem Sınırları ve Aktör Etkileşimi</span>
-                    </div>
-                </div>
-            </div>
-
+        <!-- 2. Bölüm: Use Case Diyagramı -->
+        <section id="use-case">
+            <h2>2. Use Case (Kullanım Senaryosu) Diyagramı</h2>
             <p>
-                Use Case diyagramları, sistemin dış dünya ile olan işlevsel sınırlarını ve aktörlerin hangi hedeflere ulaşabildiğini gösteren davranışsal diyagramlardır. Sistemin <em>nasıl</em> kodlanacağıyla değil, kullanıcıya <strong>ne sunduğuyla</strong> ilgilenir.
+                Use Case diyagramı, kullanıcıların (aktörlerin) sistem üzerinden hangi işlevleri gerçekleştirebileceğini yüksek seviyede gösteren davranışsal bir diyagramdır. Sistemin iç kod detaylarıyla değil, dışarıdan bakıldığında <strong>ne iş yaptığıyla</strong> ilgilenir.
             </p>
 
-            <h3>Temel Bileşenler ve Kurallar</h3>
-            <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-secondary);">
-                <li><strong>Aktör (Actor):</strong> Sistemle etkileşime giren insan (Üye, Görevli) veya harici servis (Bildirim Servisi).</li>
-                <li><strong>Use Case (Senaryo):</strong> Aktöre ölçülebilir değer üreten eylemler (oval elipsler).</li>
-                <li><strong>Sistem Sınırı (System Boundary):</strong> Yazılımın kapsamını belirleyen dikdörtgen çerçeve.</li>
-                <li><strong>&lt;&lt;include&gt;&gt; (Kapsama):</strong> Bir senaryonun çalışması için zorunlu ve kaçınılmaz olan alt senaryo (Örn: <em>Ödünç Alma &rarr; Üyelik ve Borç Kontrolü</em>).</li>
-                <li><strong>&lt;&lt;extend&gt;&gt; (Genişletme):</strong> Yalnızca belirli bir şart sağlandığında devreye giren isteğe bağlı durum (Örn: <em>İade Etme &rarr; Gecikme Cezası Hesaplama</em>).</li>
+            <h3>Temel Kavramlar:</h3>
+            <ul>
+                <li><strong>Aktör (Actor):</strong> Sistemle etkileşime geçen kişi veya harici servislerdir (Örn: Üye, Kütüphaneci, SMS Servisi).</li>
+                <li><strong>Use Case (Senaryo):</strong> Sistemin sunduğu bir fonksiyon veya hedeftir (Örn: Kitap Ödünç Al).</li>
+                <li><strong>&lt;&lt;include&gt;&gt; (Kapsama):</strong> Bir senaryo çalıştığında çalışması zorunlu olan alt senaryodur. Örneğin kitap ödünç alınırken her seferinde üyenin ceza ve limit kontrolünün yapılması zorunludur.</li>
+                <li><strong>&lt;&lt;extend&gt;&gt; (Genişletme):</strong> Belirli bir koşul gerçekleştiğinde devreye giren isteğe bağlı durumdur. Örneğin kitap iade edilirken süre aşılmışsa gecikme cezası hesaplanması extend ilişkisidir.</li>
             </ul>
 
-            <h3>Canlı Use Case Mermaid Grafiği (Kütüphane Otomasyonu)</h3>
-            <div class="diagram-container" id="useCaseContainer"></div>
+            <div class="diagram-container" id="useCaseContainer">
+                Yükleniyor...
+            </div>
+            <p class="diagram-caption">Şekil 1: Kütüphane Otomasyon Sistemi Use Case (Kullanım Senaryosu) Diyagramı</p>
         </section>
 
-        <!-- Bölüm 3: ER Diyagramı -->
-        <section id="er-diyagram" class="section-card">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <div class="section-icon">🗄️</div>
-                    <div>
-                        <h2 class="section-title">3. ER (Entity-Relationship) Diyagramı</h2>
-                        <span class="section-subtitle">İlişkisel Veri Modeli ve Tablo Şeması</span>
-                    </div>
-                </div>
-            </div>
-
+        <!-- 3. Bölüm: ER Diyagramı -->
+        <section id="er-diyagram">
+            <h2>3. ER (Entity-Relationship) Diyagramı</h2>
             <p>
-                1976 yılında Peter Chen tarafından geliştirilen ER diyagramı, ilişkisel veritabanlarında saklanacak verilerin kavramsal ve mantıksal şemasını tanımlar. Varlıkları (Entity/Tablo), nitelikleri (Attribute/Kolon), birincil anahtarları (PK), yabancı anahtarları (FK) ve kardinalite ilişkilerini (1:1, 1:N, M:N) modeller.
+                ER diyagramı (Varlık-İlişki Modeli), Peter Chen tarafından 1976 yılında geliştirilmiş bir veritabanı modelleme tekniğidir. Veritabanında saklayacağımız varlıkları (tabloları), bu varlıkların niteliklerini (kolonlarını) ve tablolar arasındaki ilişkileri gösterir.
             </p>
 
-            <div class="callout">
-                <div class="callout-title">🔑 M:N İlişkilerde Junction Table (Ara Tablo) Çözümü</div>
-                <p>
-                    Bir üye birden fazla kitap ödünç alabilir, bir kitap da zaman içerisinde birçok farklı üyeye ödünç verilebilir (M:N ilişki). İlişkisel veritabanı normalizasyon kuralları gereği bu ilişki <code>ODUNC_ISLEMI</code> ara tablosu ile iki ayrı <strong>1:N</strong> ilişkiye bölünmüştür.
-                </p>
-            </div>
+            <h3>Veritabanı Yapısı ve İlişkiler:</h3>
+            <ul>
+                <li><strong>1:N (Bire-Çok) İlişki:</strong> Bir kategoride birden fazla kitap bulunabilir (Kategori &rarr; Kitap).</li>
+                <li><strong>M:N (Çoka-Çok) İlişki ve Ara Tablo:</strong> Bir üye birçok kitap ödünç alabilir, bir kitap da farklı zamanlarda birçok üyeye verilebilir. İlişkisel veritabanında bu çoka-çok ilişkiyi yönetebilmek için <code>ODUNC_ISLEMI</code> adında bir ara tablo (junction table) oluşturulur. Böylece iki adet 1:N ilişki kurulmuş olur.</li>
+            </ul>
 
-            <h3>Canlı ER Mermaid Grafiği</h3>
-            <div class="diagram-container" id="erContainer"></div>
+            <div class="diagram-container" id="erContainer">
+                Yükleniyor...
+            </div>
+            <p class="diagram-caption">Şekil 2: Kütüphane Veritabanı ER (Varlık-İlişki) Diyagramı</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tablo Adı</th>
+                        <th>Birincil Anahtar (PK)</th>
+                        <th>Yabancı Anahtar (FK)</th>
+                        <th>Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>KATEGORI</strong></td>
+                        <td>KategoriID</td>
+                        <td>-</td>
+                        <td>Kitapların türlerini tutar (Roman, Mühendislik, Tarih vb.).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>KITAP</strong></td>
+                        <td>KitapID</td>
+                        <td>KategoriID</td>
+                        <td>Kütüphanedeki kitapların künye ve stok bilgilerini tutar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UYE</strong></td>
+                        <td>UyeID</td>
+                        <td>-</td>
+                        <td>Kütüphaneye kayıtlı üyelerin iletişim ve kimlik verilerini tutar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ODUNC_ISLEMI</strong></td>
+                        <td>OduncID</td>
+                        <td>UyeID, KitapID</td>
+                        <td>Ödünç alma ve iade hareketlerini saklayan ara tablodur.</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
-        <!-- Bölüm 4: Class Diyagramı -->
-        <section id="class-diyagram" class="section-card">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <div class="section-icon">🧩</div>
-                    <div>
-                        <h2 class="section-title">4. Class (Sınıf) Diyagramı</h2>
-                        <span class="section-subtitle">OOP Mimarisi, Erişim Belirleyiciler ve İlişki Tipleri</span>
-                    </div>
-                </div>
-            </div>
-
+        <!-- 4. Bölüm: Class Diyagramı -->
+        <section id="class-diyagram">
+            <h2>4. Class (Sınıf) Diyagramı</h2>
             <p>
-                Sınıf diyagramı, yazılımın bellek üzerindeki nesne mimarisini, arayüzlerini (interfaces), sınıfların veri alanlarını, metotlarını ve aralarındaki nesne yönelimli bağları modeller.
+                Class diyagramı, Nesne Yönelimli Programlamanın (OOP) temel yapı taşıdır. Yazılımın bellekte nasıl çalışacağını, sınıfların alanlarını (properties), metotlarını ve aralarındaki kalıtım/birliktelik bağlarını modeller.
             </p>
 
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>OOP İlişki Tipi</th>
-                            <th>UML Sembolü</th>
-                            <th>Tanım ve Örnek</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Inheritance (Kalıtım)</strong></td>
-                            <td><code>&lt;|--</code> (İçi boş ok)</td>
-                            <td>"is-a" ilişkisi. Alt sınıf üst sınıfın alan ve davranışlarını devralır (Örn: <code>Kisi &lt;|-- Uye</code>).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Association (Birliktelik)</strong></td>
-                            <td><code>--&gt;</code> (Düz ok)</td>
-                            <td>Sınıflar arası kullanım bağıdır. Örn: <code>OduncKaydi --&gt; Kitap</code>.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Aggregation (Bütünleme)</strong></td>
-                            <td><code>o--</code> (Boş dörtgen)</td>
-                            <td>"has-a" zayıf sahiplik. Parça bağımsız yaşayabilir (Örn: <code>Kutuphane o-- Kitap</code>).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Composition (Bileşim)</strong></td>
-                            <td><code>*--</code> (Dolu dörtgen)</td>
-                            <td>Güçlü sahiplik ve yaşam döngüsü bağımlılığı. Bütün yok edilirse parça da yok olur (Örn: <code>Uye *-- OduncKaydi</code>).</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <h3>UML Erişim Belirteçleri ve OOP Kavramları:</h3>
+            <ul>
+                <li><code>+</code> (Public): Her yerden erişilebilir.</li>
+                <li><code>-</code> (Private): Yalnızca tanımlandığı sınıf içerisinden erişilebilir (Kapsülleme).</li>
+                <li><code>#</code> (Protected): Sınıfın kendisi ve ondan türeyen alt sınıflar erişebilir.</li>
+                <li><strong>Kalıtım (Inheritance):</strong> <code>Kisi</code> soyut sınıfından <code>Uye</code> ve <code>Kutuphaneci</code> sınıfları türetilmiştir.</li>
+                <li><strong>Bütünleme (Aggregation):</strong> Kütüphane sınıfı kitapları barındırır, ancak kütüphane kapansa da kitap varlığını korur (<code>o--</code>).</li>
+                <li><strong>Bileşim (Composition):</strong> Üye ile ödünç kaydı arasındaki sıkı sahiplik ilişkisidir (<code>*--</code>).</li>
+            </ul>
 
-            <h3>Canlı Class Mermaid Grafiği</h3>
-            <div class="diagram-container" id="classContainer"></div>
+            <div class="diagram-container" id="classContainer">
+                Yükleniyor...
+            </div>
+            <p class="diagram-caption">Şekil 3: Kütüphane Otomasyon Sistemi Sınıf (Class) Diyagramı</p>
         </section>
 
-        <!-- Bölüm 5: C# Kod Uygulaması -->
-        <section id="csharp-kod" class="section-card">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <div class="section-icon">💻</div>
-                    <div>
-                        <h2 class="section-title">5. C# Nesne Yönelimli Kod Karşılığı</h2>
-                        <span class="section-subtitle">Sınıf Diyagramının Üretime Hazır .NET 8 / C# OOP İmplementasyonu</span>
-                    </div>
-                </div>
-                <div>
-                    <button class="btn btn-outline" id="copyCodeBtn">
-                        <span>📋</span> Kodu Kopyala
-                    </button>
-                </div>
-            </div>
-
+        <!-- 5. Bölüm: C# Kod Karşılığı -->
+        <section id="csharp-kod">
+            <h2>5. C# Nesne Yönelimli Kod Karşılığı (KutuphaneModel.cs)</h2>
             <p>
-                Aşağıdaki C# kodu, oluşturulan sınıf diyagramındaki tüm soyutlama, kapsülleme, kalıtım ve polimorfizm prensiplerini barındıran modüler bir model dosyasıdır (Dosya: <code>KutuphaneModel.cs</code>).
+                Yukarıda tasarladığım sınıf diyagramını C# dilinde nesne yönelimli programlama prensiplerine uygun olarak kodladım. Kod içerisinde abstract class, interface, inheritance ve kapsülleme mekanizmaları kullanılmıştır.
             </p>
 
-            <div class="code-container">
+            <div class="code-box">
                 <div class="code-header">
-                    <span>📄 KutuphaneModel.cs</span>
-                    <span class="lang-badge">C# 12 / .NET 8</span>
+                    <span>KutuphaneModel.cs (C# OOP Kodu)</span>
+                    <button class="btn-copy" id="btnCopyCode" onclick="copyCode()">Kodu Kopyala</button>
                 </div>
-                <pre><code id="csharpCodeBlock">using System;
+                <pre><code id="csharpCode">using System;
 using System.Collections.Generic;
 
 namespace KutuphaneOtomasyonu
 {
+    // Temel enum tanımları
     public enum OduncDurumu { DevamEdiyor, TeslimEdildi, Gecikmede, IptalEdildi }
     public enum UyelikTipi { Ogrenci, Akademisyen, IdariPersonel, Genel }
 
+    // Kişi arayüzü
     public interface IKisi
     {
         int Id { get; }
@@ -903,6 +545,7 @@ namespace KutuphaneOtomasyonu
         void BilgiYazdir();
     }
 
+    // Soyut Kisi Temel Sınıfı (Abstract Class)
     public abstract class Kisi : IKisi
     {
         private string _ad;
@@ -910,9 +553,25 @@ namespace KutuphaneOtomasyonu
         private string _eposta;
 
         public int Id { get; protected set; }
-        public string Ad { get => _ad; set => _ad = !string.IsNullOrWhiteSpace(value) ? value.Trim() : throw new ArgumentException("Ad boş olamaz."); }
-        public string Soyad { get => _soyad; set => _soyad = !string.IsNullOrWhiteSpace(value) ? value.Trim() : throw new ArgumentException("Soyad boş olamaz."); }
-        public string Eposta { get => _eposta; set => _eposta = (!string.IsNullOrWhiteSpace(value) && value.Contains("@")) ? value.Trim() : throw new ArgumentException("Geçersiz e-posta."); }
+
+        public string Ad
+        {
+            get => _ad;
+            set => _ad = !string.IsNullOrWhiteSpace(value) ? value.Trim() : throw new ArgumentException("Ad boş bırakılamaz.");
+        }
+
+        public string Soyad
+        {
+            get => _soyad;
+            set => _soyad = !string.IsNullOrWhiteSpace(value) ? value.Trim() : throw new ArgumentException("Soyad boş bırakılamaz.");
+        }
+
+        public string Eposta
+        {
+            get => _eposta;
+            set => _eposta = (!string.IsNullOrWhiteSpace(value) && value.Contains("@")) ? value.Trim() : throw new ArgumentException("Geçersiz e-posta.");
+        }
+
         public string Telefon { get; set; }
 
         protected Kisi(int id, string ad, string soyad, string eposta, string telefon)
@@ -924,17 +583,23 @@ namespace KutuphaneOtomasyonu
         public virtual void BilgiYazdir() => Console.WriteLine($"[ID: {Id}] {TamAd()} | E-posta: {Eposta}");
     }
 
+    // Üye Sınıfı (Kalıtım: Kisi'den türetildi)
     public class Uye : Kisi
     {
         public string UyeNo { get; private set; }
         public UyelikTipi Tip { get; set; }
+        public DateTime UyelikTarihi { get; private set; }
+        public bool AktifMi { get; set; }
         public decimal ToplamCezaBorcu { get; private set; }
         public List&lt;OduncKaydi&gt; AktifOduncler { get; private set; } = new();
 
         public Uye(int id, string ad, string soyad, string eposta, string telefon, string uyeNo, UyelikTipi tip)
             : base(id, ad, soyad, eposta, telefon)
         {
-            UyeNo = uyeNo; Tip = tip;
+            UyeNo = uyeNo;
+            Tip = tip;
+            UyelikTarihi = DateTime.Now;
+            AktifMi = true;
         }
 
         public int MaksimumKitapLimiti() => Tip switch
@@ -944,28 +609,68 @@ namespace KutuphaneOtomasyonu
             _ => 3
         };
 
-        public bool OduncAlabilirMi() => ToplamCezaBorcu <= 50.0m && AktifOduncler.Count < MaksimumKitapLimiti();
+        public bool OduncAlabilirMi() => AktifMi && ToplamCezaBorcu <= 50.0m && AktifOduncler.Count < MaksimumKitapLimiti();
         public void CezaEkle(decimal tutar) { if (tutar > 0) ToplamCezaBorcu += tutar; }
+        public void CezaOde(decimal tutar) { if (tutar > 0) ToplamCezaBorcu = Math.Max(0, ToplamCezaBorcu - tutar); }
     }
 
+    // Kütüphaneci Personel Sınıfı
+    public class Kutuphaneci : Kisi
+    {
+        public string PersonelKodu { get; private set; }
+        public string Unvan { get; set; }
+        public int YetkiSeviyesi { get; set; }
+
+        public Kutuphaneci(int id, string ad, string soyad, string eposta, string telefon, string personelKodu, string unvan, int yetki = 1)
+            : base(id, ad, soyad, eposta, telefon)
+        {
+            PersonelKodu = personelKodu;
+            Unvan = unvan;
+            YetkiSeviyesi = yetki;
+        }
+
+        public Kitap YeniKitapKaydet(string isbn, string baslik, string yazar, int yayinYili, int stok, Kategori kategori)
+        {
+            return new Kitap(new Random().Next(1000, 9999), isbn, baslik, yazar, yayinYili, stok, kategori);
+        }
+    }
+
+    // Kategori Sınıfı
+    public class Kategori
+    {
+        public int KategoriId { get; set; }
+        public string Ad { get; set; }
+        public string Aciklama { get; set; }
+
+        public Kategori(int id, string ad, string aciklama = "")
+        {
+            KategoriId = id; Ad = ad; Aciklama = aciklama;
+        }
+    }
+
+    // Kitap Sınıfı
     public class Kitap
     {
         public int KitapId { get; private set; }
         public string ISBN { get; private set; }
         public string Baslik { get; set; }
         public string Yazar { get; set; }
+        public int YayinYili { get; set; }
         public int StokAdedi { get; private set; }
+        public Kategori Kategori { get; set; }
 
-        public Kitap(int id, string isbn, string baslik, string yazar, int stok)
+        public Kitap(int id, string isbn, string baslik, string yazar, int yayinYili, int stok, Kategori kategori)
         {
-            KitapId = id; ISBN = isbn; Baslik = baslik; Yazar = yazar; StokAdedi = Math.Max(0, stok);
+            KitapId = id; ISBN = isbn; Baslik = baslik; Yazar = yazar; YayinYili = yayinYili;
+            StokAdedi = Math.Max(0, stok); Kategori = kategori;
         }
 
         public bool OduncVerilebilirMi() => StokAdedi > 0;
-        public void StokAzalt() { if (StokAdedi <= 0) throw new InvalidOperationException("Stok yok!"); StokAdedi--; }
+        public void StokAzalt() { if (StokAdedi <= 0) throw new InvalidOperationException("Stok bitti."); StokAdedi--; }
         public void StokArtir() => StokAdedi++;
     }
 
+    // Ödünç Kaydı Sınıfı (Junction Model)
     public class OduncKaydi
     {
         public Guid IslemId { get; private set; } = Guid.NewGuid();
@@ -976,6 +681,7 @@ namespace KutuphaneOtomasyonu
         public DateTime? TeslimTarihi { get; private set; }
         public OduncDurumu Durum { get; private set; } = OduncDurumu.DevamEdiyor;
         public decimal CezaTutari { get; private set; }
+        public const decimal GunlukGecikmeCezasi = 5.0m;
 
         public OduncKaydi(Uye uye, Kitap kitap, int gun = 15)
         {
@@ -987,12 +693,15 @@ namespace KutuphaneOtomasyonu
             TeslimTarihi = teslimTarihi;
             if (teslimTarihi > SonTeslimTarihi)
             {
-                int gun = (int)Math.Ceiling((teslimTarihi - SonTeslimTarihi).TotalDays);
-                CezaTutari = gun * 5.0m;
+                int gecikenGun = (int)Math.Ceiling((teslimTarihi - SonTeslimTarihi).TotalDays);
+                CezaTutari = gecikenGun * GunlukGecikmeCezasi;
                 Durum = OduncDurumu.Gecikmede;
                 Uye.CezaEkle(CezaTutari);
             }
-            else { Durum = OduncDurumu.TeslimEdildi; }
+            else
+            {
+                Durum = OduncDurumu.TeslimEdildi;
+            }
             Kitap.StokArtir();
             Uye.AktifOduncler.Remove(this);
         }
@@ -1001,91 +710,114 @@ namespace KutuphaneOtomasyonu
             </div>
         </section>
 
-        <!-- Bölüm 6: Karşılaştırma Matrisi -->
-        <section id="karsilastirma" class="section-card">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <div class="section-icon">⚖️</div>
-                    <div>
-                        <h2 class="section-title">6. Diyagram Karşılaştırma Matrisi</h2>
-                        <span class="section-subtitle">Use Case, ER ve Class Diyagramlarının Mimari Ayrımları</span>
-                    </div>
-                </div>
-            </div>
-
+        <!-- 6. Bölüm: Karşılaştırma Matrisi -->
+        <section id="karsilastirma">
+            <h2>6. Diyagramların Karşılaştırma Tablosu</h2>
             <p>
-                Her üç modelleme yöntemi yazılım geliştirme sürecinde birbirini tamamlayan farklı bakış açılarını (Perspectives) temsil eder. Aşağıdaki tablo bu üç yaklaşımı temel parametreler nezdinde özetlemektedir:
+                Hazırladığım bu üç diyagram türü yazılım geliştirme sürecinin farklı aşamalarına ve farklı hedef kitlelerine hitap eder. Aralarındaki temel farkları şu tabloda özetledim:
             </p>
 
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Parametre</th>
-                            <th>Use Case Diyagramı</th>
-                            <th>ER (Varlık-İlişki) Diyagramı</th>
-                            <th>Class (Sınıf) Diyagramı</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Ana Soru</strong></td>
-                            <td>Sistem kullanıcıya <em>NE</em> sunuyor?</td>
-                            <td>Veriler diskte <em>NASIL</em> saklanıyor?</td>
-                            <td>Nesneler bellekte <em>NASIL</em> çalışıyor?</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SDLC Safhası</strong></td>
-                            <td><span class="badge-pill">Gereksinim Analizi</span></td>
-                            <td><span class="badge-pill warning">Veritabanı Tasarımı</span></td>
-                            <td><span class="badge-pill success">Detay Tasarım & Kodlama</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Model Türü</strong></td>
-                            <td>UML Davranışsal (Dinamik)</td>
-                            <td>İlişkisel Veri Modeli (Statik)</td>
-                            <td>UML Yapısal (Statik)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Temel Öğeler</strong></td>
-                            <td>Actor, Use Case, Include, Extend</td>
-                            <td>Entity, Attribute, PK, FK, Kardinalite</td>
-                            <td>Class, Interface, Field, Method, Property</td>
-                        </tr>
-                        <tr>
-                            <td><strong>İş Mantığı</strong></td>
-                            <td>Yok (Salt kullanıcı adımları)</td>
-                            <td>Yok (Salt veri alanları ve kısıtlar)</td>
-                            <td><strong>Var</strong> (Metotlar ve iş kuralları)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Hedef Kitle</strong></td>
-                            <td>Müşteri, Analist, Son Kullanıcı</td>
-                            <td>Veritabanı Yöneticisi (DBA), Backend</td>
-                            <td>Yazılım Mimarı, Geliştirici</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Karşılaştırma Kriteri</th>
+                        <th>Use Case Diyagramı</th>
+                        <th>ER (Varlık-İlişki) Diyagramı</th>
+                        <th>Class (Sınıf) Diyagramı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Odak Noktası</strong></td>
+                        <td>Sistemin kullanıcılara ne sağladığı (fonksiyonel hedefler).</td>
+                        <td>Verilerin veritabanında nasıl saklanacağı.</td>
+                        <td>Yazılım nesnelerinin bellekte nasıl çalışacağı ve metotları.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kullanıldığı Aşama</strong></td>
+                        <td>Gereksinim Analizi (Başlangıç)</td>
+                        <td>Veritabanı Tasarımı</td>
+                        <td>Detaylı Tasarım ve Kodlama</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Diyagram Türü</strong></td>
+                        <td>UML Davranışsal (Dinamik)</td>
+                        <td>İlişkisel Veri Modeli</td>
+                        <td>UML Yapısal (Statik)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temel Elemanlar</strong></td>
+                        <td>Aktör, Senaryo, Include, Extend</td>
+                        <td>Varlık (Tablo), Kolon, PK, FK</td>
+                        <td>Sınıf, Arayüz, Özellik, Metot</td>
+                    </tr>
+                    <tr>
+                        <td><strong>İş Mantığı & Metot</strong></td>
+                        <td>Yok (Sadece kullanıcı aksiyonları)</td>
+                        <td>Yok (Sadece veri tipleri ve kısıtlar)</td>
+                        <td><strong>Var</strong> (Hesaplama ve iş kuralları metotlarda)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hedef Kitle</strong></td>
+                        <td>Müşteri, Analist, Proje Yöneticisi</td>
+                        <td>Veritabanı Yöneticisi (DBA), Backend</td>
+                        <td>Yazılım Geliştirici, Yazılım Mimarı</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
+        <!-- 7. Bölüm: Kaynakça (Gerçek Çalışan Bağlantılar) -->
+        <section id="kaynakca">
+            <h2>7. Kaynakça</h2>
+            <p>
+                Bu ödevi hazırlarken faydalandığım, bizzat kontrol edilmiş ve çalışan resmi dokümantasyon ve akademik kaynak bağlantıları aşağıda listelenmiştir:
+            </p>
+
+            <ol class="references-list">
+                <li>
+                    <strong>Object Management Group (OMG) — Resmi UML 2.5.1 Şartnamesi:</strong><br>
+                    UML diyagram standartlarının ve gösterim kurallarının resmi teknik dokümanı.<br>
+                    <a href="https://www.omg.org/spec/UML/2.5.1/" target="_blank" rel="noopener noreferrer">https://www.omg.org/spec/UML/2.5.1/</a>
+                </li>
+                <li>
+                    <strong>Martin Fowler — UML Distilled Rehberi:</strong><br>
+                    Yazılım mimarisi ve UML modelleme standartları üzerine referans kitap ve makaleler.<br>
+                    <a href="https://martinfowler.com/books/uml.html" target="_blank" rel="noopener noreferrer">https://martinfowler.com/books/uml.html</a>
+                </li>
+                <li>
+                    <strong>Visual Paradigm — UML Diyagram Türleri ve Kılavuzu:</strong><br>
+                    Use Case, Sınıf ve Aktivite diyagramlarının endüstri standartlarındaki çizim kuralları.<br>
+                    <a href="https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-diagram-types-guide/" target="_blank" rel="noopener noreferrer">https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-diagram-types-guide/</a>
+                </li>
+                <li>
+                    <strong>GeeksforGeeks — Unified Modeling Language (UML) Giriş Kılavuzu:</strong><br>
+                    UML diyagramlarının sınıflandırılması, yapısal ve davranışsal modellerin açıklamaları.<br>
+                    <a href="https://www.geeksforgeeks.org/unified-modeling-language-uml-introduction/" target="_blank" rel="noopener noreferrer">https://www.geeksforgeeks.org/unified-modeling-language-uml-introduction/</a>
+                </li>
+                <li>
+                    <strong>Microsoft Learn — C# Nesne Yönelimli Programlama (OOP) Dokümantasyonu:</strong><br>
+                    C# dilinde sınıf, nesne, kalıtım, interface ve kapsülleme mekanizmalarının resmi anlatımı.<br>
+                    <a href="https://learn.microsoft.com/tr-tr/dotnet/csharp/fundamentals/tutorials/oop" target="_blank" rel="noopener noreferrer">https://learn.microsoft.com/tr-tr/dotnet/csharp/fundamentals/tutorials/oop</a>
+                </li>
+                <li>
+                    <strong>Mermaid JS — Resmi Diyagram Dokümantasyonu:</strong><br>
+                    Markdown ve HTML içerisinde canlı Flowchart, ER ve Class diyagramı çizim sözdizimi.<br>
+                    <a href="https://mermaid.js.org/" target="_blank" rel="noopener noreferrer">https://mermaid.js.org/</a>
+                </li>
+            </ol>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Web Programcılığı III Dersi — Hasan Ali Yücel — 2026</p>
+        </footer>
+
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <span>✓</span> C# Kod bloğu panoya kopyalandı!
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <p><strong>Web Programcılığı III</strong> — UML Modelleme ve OOP Tasarım Ödevi</p>
-        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Hasan Ali Yücel © 2026 | Unified Modeling Language (OMG UML 2.5 Specification)</p>
-    </footer>
-
-    <!-- Scripts -->
+    <!-- JavaScript: Mermaid Çizimi ve Yardımcı Fonksiyonlar -->
     <script>
-        // Mermaid Initialization
-        // Diagram Definitions (JavaScript Template Strings - Clean and Escaping-Proof)
+        // Diyagram Tanımları (JavaScript Şablon Dizeleri)
         const DIAGRAMS = {
             useCase: `flowchart LR
     subgraph Aktorler ["Sistem Aktörleri"]
@@ -1094,7 +826,7 @@ namespace KutuphaneOtomasyonu
         Servis["⚙️ Bildirim Servisi (E-posta/SMS)"]
     end
 
-    subgraph KutuphaneSistemi ["🏛️ Sistem Sınırı: Kütüphane Otomasyon Sistemi"]
+    subgraph KutuphaneSistemi ["Sistem Sınırı: Kütüphane Otomasyon Sistemi"]
         UC1(["Kitap Kataloğunda Arama Yap"])
         UC2(["Kitap Ödünç Al"])
         UC3(["Üyelik Doğrula & Borç Kontrolü"])
@@ -1262,100 +994,45 @@ namespace KutuphaneOtomasyonu
     Uye "1" *-- "*" OduncKaydi`
         };
 
-        let currentRenderId = 0;
-
-        function initMermaid(theme) {
+        // Sayfa yüklendiğinde Mermaid'i standart/nötr temayla başlat
+        document.addEventListener('DOMContentLoaded', async () => {
             mermaid.initialize({
                 startOnLoad: false,
-                theme: theme === 'dark' ? 'dark' : 'default',
-                securityLevel: 'loose',
-                themeVariables: theme === 'dark' ? {
-                    darkMode: true,
-                    background: '#151c30',
-                    primaryColor: '#6366f1',
-                    primaryTextColor: '#f8fafc',
-                    primaryBorderColor: '#818cf8',
-                    lineColor: '#94a3b8',
-                    secondaryColor: '#0ea5e9',
-                    tertiaryColor: '#1e293b'
-                } : {
-                    darkMode: false,
-                    background: '#f1f5f9',
-                    primaryColor: '#4f46e5',
-                    primaryTextColor: '#0f172a',
-                    primaryBorderColor: '#6366f1',
-                    lineColor: '#64748b'
-                }
+                theme: 'neutral',
+                securityLevel: 'loose'
             });
-        }
 
-        async function renderAllDiagrams(theme) {
-            initMermaid(theme);
-            const renderBatch = ++currentRenderId;
             const targets = [
-                { id: 'useCaseContainer', code: DIAGRAMS.useCase, key: 'useCaseSvg' },
-                { id: 'erContainer', code: DIAGRAMS.er, key: 'erSvg' },
-                { id: 'classContainer', code: DIAGRAMS.classDiagram, key: 'classSvg' }
+                { id: 'useCaseContainer', code: DIAGRAMS.useCase, key: 'useCase' },
+                { id: 'erContainer', code: DIAGRAMS.er, key: 'er' },
+                { id: 'classContainer', code: DIAGRAMS.classDiagram, key: 'class' }
             ];
 
             for (const item of targets) {
                 const el = document.getElementById(item.id);
                 if (!el) continue;
                 try {
-                    const uniqueId = item.key + '_' + renderBatch + '_' + Math.floor(Math.random() * 1000);
+                    const uniqueId = item.key + '_svg_' + Math.floor(Math.random() * 10000);
                     const { svg } = await mermaid.render(uniqueId, item.code);
                     el.innerHTML = svg;
                 } catch (err) {
-                    console.error('Mermaid render error for ' + item.id, err);
-                    el.innerHTML = '<div style="color:#ef4444; padding:1rem; font-family:monospace;">Diyagram yüklenirken hata oluştu: ' + err.message + '</div>';
+                    console.error('Mermaid çizim hatası: ', err);
+                    el.innerHTML = '<p style="color:#ef4444;">Diyagram yüklenirken hata oluştu.</p>';
                 }
             }
-        }
-
-        // Theme Toggle
-        const themeBtn = document.getElementById('themeToggleBtn');
-        const themeIcon = document.getElementById('themeIcon');
-        const themeText = document.getElementById('themeText');
-        const html = document.documentElement;
-
-        let currentTheme = localStorage.getItem('theme') || 'dark';
-
-        function applyTheme(theme) {
-            html.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            if (theme === 'dark') {
-                themeIcon.textContent = '☀️';
-                themeText.textContent = 'Aydınlık';
-            } else {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'Karanlık';
-            }
-            renderAllDiagrams(theme);
-        }
-
-        themeBtn.addEventListener('click', () => {
-            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(currentTheme);
         });
 
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            applyTheme(currentTheme);
-        });
-
-        // Copy Code to Clipboard
-        const copyBtn = document.getElementById('copyCodeBtn');
-        const toast = document.getElementById('toast');
-
-        copyBtn.addEventListener('click', () => {
-            const code = document.getElementById('csharpCodeBlock').innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                toast.classList.add('show');
+        // Kod Kopyalama Fonksiyonu
+        function copyCode() {
+            const codeText = document.getElementById('csharpCode').innerText;
+            const btn = document.getElementById('btnCopyCode');
+            navigator.clipboard.writeText(codeText).then(() => {
+                btn.textContent = 'Kopyalandı!';
                 setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 2800);
+                    btn.textContent = 'Kodu Kopyala';
+                }, 2000);
             });
-        });
+        }
     </script>
 </body>
 </html>

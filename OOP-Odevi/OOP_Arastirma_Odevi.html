@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>OOP Araştırma Ödevi</title>
+<style>
+@media print {
+    body { font-size: 11pt; }
+    pre { page-break-inside: avoid; }
+    h2 { page-break-before: auto; }
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 20px 40px;
+    color: #222;
+    line-height: 1.7;
+    background: #fff;
+}
+h1 {
+    text-align: center;
+    color: #1a1a2e;
+    border-bottom: 3px solid #3b82f6;
+    padding-bottom: 12px;
+    margin-bottom: 30px;
+}
+h2 {
+    color: #1e3a5f;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 6px;
+    margin-top: 35px;
+}
+h3 {
+    color: #334155;
+    margin-top: 20px;
+}
+pre {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+}
+code {
+    background: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+pre code {
+    background: none;
+    padding: 0;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #cbd5e1;
+    padding: 10px 14px;
+    text-align: left;
+}
+th {
+    background: #e2e8f0;
+    font-weight: 600;
+}
+tr:nth-child(even) {
+    background: #f8fafc;
+}
+blockquote {
+    border-left: 4px solid #3b82f6;
+    margin: 15px 0;
+    padding: 10px 20px;
+    background: #eff6ff;
+    color: #1e40af;
+}
+hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 30px 0;
+}
+strong {
+    color: #1e293b;
+}
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<h1 id="nesne-temelli-programlama-oop-arastrma-odevi">Nesne Temelli Programlama (OOP) Araştırma Ödevi</h1>
+<hr />
+<h2 id="giris">Giriş</h2>
+<p>Bu çalışmada nesne yönelimli programlamanın (OOP) temel kavramlarını araştırdım. Daha önce sadece fonksiyonlarla kod yazıyordum, her şeyi düz bir şekilde alt alta yazıyordum açıkçası. OOP'yi araştırdıkça aslında büyük projelerde neden bu kadar önemli olduğunu anlamaya başladım. Aşağıda her kavramı elimden geldiğince açıklamaya ve örneklendirmeye çalıştım.</p>
+<hr />
+<h2 id="1-snf-class-ve-nesne-object">1. Sınıf (Class) ve Nesne (Object)</h2>
+<p><strong>Sınıf</strong>, bir şeyin şablonu, kalıbı gibi düşünülebilir. Mesela bir araba fabrikasındaki teknik çizim gibi. Çizimin kendisi araba değil ama o çizimden arabalar üretiliyor. İşte sınıf da böyle bir şey.</p>
+<p><strong>Nesne</strong> ise o şablondan üretilen gerçek şey. Yani fabrikanın ürettiği her bir araba birer nesne oluyor.</p>
+<p>Günlük hayattan bakarsak: Bir kurabiye kalıbımız var diyelim. Kalıbın kendisi sınıf, o kalıpla kestiğimiz her kurabiye de bir nesne.</p>
+<pre class="codehilite"><code class="language-csharp">class Araba
+{
+    public string Marka;
+    public string Renk;
+    public int Yil;
+
+    public void Calistir()
+    {
+        Console.WriteLine(Marka + &quot; çalıştırıldı.&quot;);
+    }
+}
+
+// nesne olusturma
+Araba araba1 = new Araba();
+araba1.Marka = &quot;Toyota&quot;;
+araba1.Renk = &quot;Beyaz&quot;;
+araba1.Yil = 2020;
+araba1.Calistir();  // Toyota çalıştırıldı.
+
+Araba araba2 = new Araba();
+araba2.Marka = &quot;Honda&quot;;
+araba2.Renk = &quot;Siyah&quot;;
+araba2.Yil = 2022;
+</code></pre>
+
+<p>Burada <code>Araba</code> sınıfından iki tane farklı nesne oluşturduk. İkisi de araba ama farklı özelliklere sahipler. Bence bu şablondan üretme mantığı OOP'nin en temel fikri.</p>
+<hr />
+<h2 id="2-encapsulation-kapsulleme">2. Encapsulation (Kapsülleme)</h2>
+<p>Kapsülleme, bir nesnenin iç detaylarını dışarıdan gizleme işi. Yani biz bir nesneyi kullanırken onun içinde neler döndüğünü bilmemize gerek yok, sadece bize sunulan arayüzü kullanıyoruz.</p>
+<p>Günlük hayattan örnek verecek olursam: Televizyonun kumandasında ses açma tuşuna basıyoruz, ses açılıyor. İçeride hangi devre çalışıyor, hangi sinyal gönderiliyor bilmiyoruz ve bilmemize de gerek yok.</p>
+<pre class="codehilite"><code class="language-csharp">class BankaHesabi
+{
+    private double bakiye;  // disardan erisilemez
+
+    public BankaHesabi(double ilkBakiye)
+    {
+        bakiye = ilkBakiye;
+    }
+
+    public void ParaYatir(double miktar)
+    {
+        if (miktar &gt; 0)
+        {
+            bakiye += miktar;
+            Console.WriteLine(miktar + &quot; TL yatırıldı.&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;Geçersiz miktar!&quot;);
+        }
+    }
+
+    public void ParaCek(double miktar)
+    {
+        if (miktar &gt; 0 &amp;&amp; miktar &lt;= bakiye)
+        {
+            bakiye -= miktar;
+            Console.WriteLine(miktar + &quot; TL çekildi.&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;Yetersiz bakiye veya geçersiz miktar.&quot;);
+        }
+    }
+
+    public double BakiyeGor()
+    {
+        return bakiye;
+    }
+}
+</code></pre>
+
+<p>Burada <code>bakiye</code> değişkeni private yani dışardan kimse doğrudan <code>hesap.bakiye = -500</code> gibi saçma bir değer atayamaz. Para yatırma ve çekme işlemleri metotlar üzerinden kontrollü bir şekilde yapılıyor. Bu sayede veri bütünlüğü korunmuş oluyor.</p>
+<p>Kapsüllemenin asıl çözdüğü problem şu: eğer herkes her değişkene istediği gibi erişebilseydi, büyük projelerde bir yerden bir değeri yanlışlıkla değiştirip bulmakta zorlanırdık. Kapsülleme bunu engelliyor.</p>
+<hr />
+<h2 id="3-abstraction-soyutlama">3. Abstraction (Soyutlama)</h2>
+<p>Soyutlama, karmaşık sistemlerin sadece gerekli kısımlarını gösterip gereksiz detayları gizleme. Kapsülleme ile biraz karışıyor ama aralarında fark var. Kapsülleme veriyi gizlerken, soyutlama daha çok karmaşıklığı gizliyor.</p>
+<p>Mesela biz araba kullanırken direksiyonu çeviriyoruz, gaza basıyoruz. Ama arkada hidrolik sistemin nasıl çalıştığını, motorun hangi silindirine yakıt gittiğini bilmiyoruz. Araba bize soyutlanmış bir arayüz sunuyor: direksiyon, gaz, fren.</p>
+<pre class="codehilite"><code class="language-csharp">abstract class Sekil
+{
+    public abstract double AlanHesapla();  // nasıl hesaplanacağı alt sınıfa bırakılmış
+
+    public void Bilgi()
+    {
+        Console.WriteLine(&quot;Bu bir geometrik şekildir.&quot;);
+    }
+}
+
+class Dikdortgen : Sekil
+{
+    public double En;
+    public double Boy;
+
+    public override double AlanHesapla()
+    {
+        return En * Boy;
+    }
+}
+
+class Daire : Sekil
+{
+    public double YariCap;
+
+    public override double AlanHesapla()
+    {
+        return 3.14 * YariCap * YariCap;
+    }
+}
+</code></pre>
+
+<p>Burada <code>Sekil</code> sınıfı soyut. "Alan hesapla" diyor ama nasıl hesaplanacağını bilmiyor çünkü bu şekle göre değişir. Her alt sınıf kendi hesaplama yöntemini yazıyor. Bu şekilde bir şeklin ne olduğunu bilmesek bile <code>AlanHesapla()</code> diyebiliyoruz.</p>
+<hr />
+<h2 id="4-inheritance-kaltm">4. Inheritance (Kalıtım)</h2>
+<p>Kalıtım, bir sınıfın başka bir sınıftan özellik ve davranışları miras alması. Bu sayede aynı kodu tekrar tekrar yazmaktan kurtuluyoruz.</p>
+<p>Günlük hayattan örnek: Bir "Hayvan" düşünelim. Her hayvanın adı var, sesi var, yemek yeme davranışı var. Kedi de bir hayvan, köpek de. Ortak olan şeyleri "Hayvan" sınıfına yazıyoruz, farklı olan şeyleri de alt sınıflara.</p>
+<pre class="codehilite"><code class="language-csharp">class Hayvan
+{
+    public string Ad;
+    public int Yas;
+
+    public void YemekYe()
+    {
+        Console.WriteLine(Ad + &quot; yemek yiyor.&quot;);
+    }
+}
+
+class Kedi : Hayvan
+{
+    public void Miyavla()
+    {
+        Console.WriteLine(Ad + &quot; miyavlıyor!&quot;);
+    }
+}
+
+class Kopek : Hayvan
+{
+    public void Havla()
+    {
+        Console.WriteLine(Ad + &quot; havlıyor!&quot;);
+    }
+}
+
+// kullanim
+Kedi kedi = new Kedi();
+kedi.Ad = &quot;Tekir&quot;;
+kedi.Yas = 3;
+kedi.YemekYe();   // Tekir yemek yiyor.
+kedi.Miyavla();   // Tekir miyavlıyor!
+</code></pre>
+
+<p><code>Kedi</code> sınıfında <code>YemekYe</code> metodunu yazmadık ama <code>Hayvan</code>'dan miras aldığı için kullanabiliyoruz. Kalıtımın en büyük avantajı kod tekrarını azaltması. Gerçek projelerde de mesela bir e-ticaret sitesinde <code>Urun</code> adında bir temel sınıf olur, ondan <code>Elektronik</code>, <code>Giyim</code>, <code>Yiyecek</code> gibi alt sınıflar türetilir.</p>
+<hr />
+<h2 id="5-polymorphism-cok-bicimlilik">5. Polymorphism (Çok Biçimlilik)</h2>
+<p>Polimorfizm, aynı metodun farklı sınıflarda farklı şekilde çalışması demek. Kelime anlamı "çok biçimlilik" zaten bunu söylüyor.</p>
+<p>Günlük hayattaki karşılığı şu olabilir: "Ses çıkar" dediğimizde kedi miyavlar, köpek havlar, kuş cıvıldar. Hepsine aynı komutu veriyoruz ama her biri farklı davranıyor.</p>
+<pre class="codehilite"><code class="language-csharp">class Hayvan
+{
+    public string Ad;
+
+    public virtual void SesCikar()
+    {
+        Console.WriteLine(&quot;Hayvan ses çıkarıyor.&quot;);
+    }
+}
+
+class Kedi : Hayvan
+{
+    public override void SesCikar()
+    {
+        Console.WriteLine(Ad + &quot;: Miyav!&quot;);
+    }
+}
+
+class Kopek : Hayvan
+{
+    public override void SesCikar()
+    {
+        Console.WriteLine(Ad + &quot;: Hav hav!&quot;);
+    }
+}
+
+class Kus : Hayvan
+{
+    public override void SesCikar()
+    {
+        Console.WriteLine(Ad + &quot;: Cik cik!&quot;);
+    }
+}
+
+// polimorfizm ornegi
+List&lt;Hayvan&gt; hayvanlar = new List&lt;Hayvan&gt;();
+hayvanlar.Add(new Kedi { Ad = &quot;Pamuk&quot; });
+hayvanlar.Add(new Kopek { Ad = &quot;Karabas&quot; });
+hayvanlar.Add(new Kus { Ad = &quot;Mavis&quot; });
+
+foreach (Hayvan h in hayvanlar)
+{
+    h.SesCikar();  // her biri kendi sesini cikarir
+}
+// Pamuk: Miyav!
+// Karabas: Hav hav!
+// Mavis: Cik cik!
+</code></pre>
+
+<p>Buradaki güzel nokta şu: <code>foreach</code> döngüsünde hepsine <code>Hayvan</code> gözüyle bakıyoruz ama her biri kendi <code>SesCikar</code> metodunu çalıştırıyor. Bu büyük projelerde çok işe yarıyor çünkü yeni bir hayvan tipi eklediğimizde döngüyü değiştirmemize gerek kalmıyor, sadece yeni sınıfı yazıp listeye ekliyoruz.</p>
+<hr />
+<h2 id="6-constructor-ve-nesne-olusturma-mantg">6. Constructor ve Nesne Oluşturma Mantığı</h2>
+<p>Constructor (yapıcı metot), bir nesne oluşturulurken otomatik çalışan özel metot. Nesnenin ilk değerlerini ayarlamak için kullanılıyor.</p>
+<p>Bunu şöyle düşünebiliriz: Bir bebek doğduğunda hemen bir ismi oluyor, cinsiyeti belli. Bunlar doğuştan gelen özellikler. Constructor da nesnenin "doğum anı" gibi.</p>
+<pre class="codehilite"><code class="language-csharp">class Ogrenci
+{
+    public string Ad;
+    public string Soyad;
+    public int Numara;
+
+    // parametresiz constructor
+    public Ogrenci()
+    {
+        Ad = &quot;Bilinmiyor&quot;;
+        Soyad = &quot;Bilinmiyor&quot;;
+        Numara = 0;
+    }
+
+    // parametreli constructor
+    public Ogrenci(string ad, string soyad, int numara)
+    {
+        Ad = ad;
+        Soyad = soyad;
+        Numara = numara;
+    }
+
+    public void BilgiGoster()
+    {
+        Console.WriteLine(Numara + &quot; - &quot; + Ad + &quot; &quot; + Soyad);
+    }
+}
+
+// kullanim
+Ogrenci ogr1 = new Ogrenci();  // parametresiz
+Ogrenci ogr2 = new Ogrenci(&quot;Ali&quot;, &quot;Yılmaz&quot;, 101);  // parametreli
+
+ogr1.BilgiGoster();  // 0 - Bilinmiyor Bilinmiyor
+ogr2.BilgiGoster();  // 101 - Ali Yılmaz
+</code></pre>
+
+<p>Constructor olmasaydı her nesne oluşturduktan sonra tek tek her özelliği atamamız gerekirdi ve belki birini unuturduk. Constructor bu ilk ayarlamaları zorunlu kılarak hataları önlüyor.</p>
+<p>Bir sınıfta birden fazla constructor olabilir buna <strong>constructor overloading</strong> deniyor. Farklı parametrelerle farklı şekillerde nesne oluşturabiliyoruz.</p>
+<hr />
+<h2 id="7-access-modifiers-erisim-belirleyiciler">7. Access Modifiers (Erişim Belirleyiciler)</h2>
+<p>Erişim belirleyiciler, bir sınıfın veya üyenin nereden erişilebileceğini kontrol eden anahtar kelimeler.</p>
+<table>
+<thead>
+<tr>
+<th>Modifier</th>
+<th>Açıklama</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>public</strong></td>
+<td>Her yerden erişilebilir</td>
+</tr>
+<tr>
+<td><strong>private</strong></td>
+<td>Sadece kendi sınıfı içinden erişilebilir</td>
+</tr>
+<tr>
+<td><strong>protected</strong></td>
+<td>Kendi sınıfı ve ondan türeyen sınıflardan erişilebilir</td>
+</tr>
+</tbody>
+</table>
+<p>Günlük hayat benzetmesi: Bir evde düşünelim.
+- <strong>public</strong>: Evin bahçesi, herkes görebilir.
+- <strong>private</strong>: Evin kasası, sadece ev sahibi açabilir.
+- <strong>protected</strong>: Evin anahtarı, sadece aile bireyleri (miras alan sınıflar) kullanabilir.</p>
+<pre class="codehilite"><code class="language-csharp">class Calisan
+{
+    public string Ad;           // herkes gorebilir
+    private double maas;        // sadece bu sinif icinden
+    protected string departman; // bu sinif ve alt siniflar
+
+    public Calisan(string ad, double maas, string departman)
+    {
+        this.Ad = ad;
+        this.maas = maas;
+        this.departman = departman;
+    }
+
+    public double MaasGoster()
+    {
+        return maas;  // private alana kendi icinden erisiyoruz
+    }
+}
+
+class Mudur : Calisan
+{
+    public Mudur(string ad, double maas, string dep) : base(ad, maas, dep)
+    {
+    }
+
+    public void DepartmanGoster()
+    {
+        Console.WriteLine(&quot;Departman: &quot; + departman);
+        // departman protected oldugu icin alt siniftan erisilebilir
+
+        // Console.WriteLine(maas);  // bu hata verir cunku maas private
+    }
+}
+</code></pre>
+
+<p>Access modifier'lar aslında kapsüllemenin uygulama aracı. Neyin nereden erişilebileceğini biz belirliyoruz. Bu büyük ekiplerde çok önemli çünkü bir geliştirici yanlışlıkla başka birinin sınıfındaki kritik bir değeri bozamıyor.</p>
+<hr />
+<h2 id="8-interface-ve-abstract-class">8. Interface ve Abstract Class</h2>
+<h3 id="abstract-class-soyut-snf">Abstract Class (Soyut Sınıf)</h3>
+<p>Abstract class, doğrudan nesne oluşturulamayan, alt sınıflara temel oluşturan sınıf. Hem normal metotları hem de gövdesiz (abstract) metotları barındırabilir.</p>
+<pre class="codehilite"><code class="language-csharp">abstract class Calisan
+{
+    public string Ad;
+
+    public void IseCikar()
+    {
+        Console.WriteLine(Ad + &quot; işe gidiyor.&quot;);  // ortak davranis
+    }
+
+    public abstract double MaasHesapla();  // her calisan tipi farkli hesaplar
+}
+
+class TamZamanli : Calisan
+{
+    public double AylikMaas;
+
+    public override double MaasHesapla()
+    {
+        return AylikMaas;
+    }
+}
+
+class YariZamanli : Calisan
+{
+    public double SaatUcreti;
+    public int CalismaSaati;
+
+    public override double MaasHesapla()
+    {
+        return SaatUcreti * CalismaSaati;
+    }
+}
+</code></pre>
+
+<h3 id="interface-arayuz">Interface (Arayüz)</h3>
+<p>Interface ise bir sözleşme gibi. "Bu interface'i uygulayan sınıf şu metotlara sahip olmak zorundadır" diyor. İçinde sadece metot imzaları var, gövde yok (C#'ın yeni sürümlerinde default implementation eklenmiş ama temelde böyle).</p>
+<pre class="codehilite"><code class="language-csharp">interface IYazdirabilir
+{
+    void Yazdir();
+}
+
+interface IKaydedilebilir
+{
+    void Kaydet();
+}
+
+class Rapor : IYazdirabilir, IKaydedilebilir
+{
+    public string Baslik;
+    public string Icerik;
+
+    public void Yazdir()
+    {
+        Console.WriteLine(&quot;Rapor yazdırılıyor: &quot; + Baslik);
+    }
+
+    public void Kaydet()
+    {
+        Console.WriteLine(&quot;Rapor kaydediliyor: &quot; + Baslik);
+    }
+}
+</code></pre>
+
+<h3 id="aralarndaki-fark">Aralarındaki Fark</h3>
+<p>Bunu araştırırken en çok karıştırdığım konu buydu. Farkları şöyle özetleyebilirim:</p>
+<ul>
+<li>Abstract class'tan sadece bir tane miras alınabilir ama birden fazla interface uygulanabilir.</li>
+<li>Abstract class'ta hem gövdeli hem gövdesiz metot olabilir, interface'te (genel olarak) sadece gövdesiz metot imzaları olur.</li>
+<li>Abstract class "bu nedir" sorusuna cevap verir (Kedi bir Hayvandır), interface ise "bu ne yapabilir" sorusuna cevap verir (Rapor yazdırılabilir, kaydedilebilir).</li>
+</ul>
+<p>Bir sınıf hem abstract class'tan türeyip hem de interface uygulayabilir. Bu da esneklik sağlıyor.</p>
+<hr />
+<h2 id="9-composition-ve-inheritance-arasndaki-fark">9. Composition ve Inheritance Arasındaki Fark</h2>
+<p>Bu konu aslında "ne zaman kalıtım, ne zaman composition kullanmalıyız" sorusunun cevabı.</p>
+<p><strong>Inheritance (Kalıtım):</strong> "is-a" ilişkisi kurar. Kedi <strong>bir</strong> hayvandır.</p>
+<p><strong>Composition:</strong> "has-a" ilişkisi kurar. Araba <strong>bir</strong> motora <strong>sahiptir</strong>.</p>
+<pre class="codehilite"><code class="language-csharp">// Inheritance ornegi - &quot;is-a&quot;
+class Hayvan
+{
+    public void Nefes()
+    {
+        Console.WriteLine(&quot;Nefes alıyor.&quot;);
+    }
+}
+
+class Kedi : Hayvan  // Kedi bir Hayvandır
+{
+}
+
+// Composition ornegi - &quot;has-a&quot;
+class Motor
+{
+    public int BeygirGucu;
+
+    public void Calis()
+    {
+        Console.WriteLine(&quot;Motor çalışıyor. Güç: &quot; + BeygirGucu + &quot; HP&quot;);
+    }
+}
+
+class Araba
+{
+    private Motor motor;  // Araba bir Motor degil, motora sahip
+
+    public Araba(int beygir)
+    {
+        motor = new Motor();
+        motor.BeygirGucu = beygir;
+    }
+
+    public void Calistir()
+    {
+        motor.Calis();
+        Console.WriteLine(&quot;Araba hareket ediyor.&quot;);
+    }
+}
+</code></pre>
+
+<p>Kalıtım kullanırken dikkat etmemiz gereken şey şu: gerçekten "bu onun bir türü mü" diye sormamız lazım. Eğer sadece bazı özelliklerini kullanmak istiyorsak composition daha mantıklı oluyor.</p>
+<p>Araştırırken karşıma çıkan güzel bir kural: <strong>"Favor composition over inheritance"</strong> yani mümkünse kalıtım yerine composition tercih edilmeli. Çünkü kalıtım sıkı bir bağ kuruyor, üst sınıf değişirse alt sınıflar da etkileniyor. Composition'da bu bağ daha gevşek.</p>
+<hr />
+<h2 id="10-nesneler-arasndaki-iliskiler">10. Nesneler Arasındaki İlişkiler</h2>
+<p>Nesneler arasında farklı tipte ilişkiler olabiliyor. Bunları araştırdığımda 4 ana tip gördüm:</p>
+<h3 id="association-iliskilendirme">Association (İlişkilendirme)</h3>
+<p>İki nesne birbirini tanıyor ama birbirinden bağımsız yaşayabiliyorlar. Mesela öğretmen ve öğrenci: öğretmen olmasa da öğrenci var, öğrenci olmasa da öğretmen var.</p>
+<pre class="codehilite"><code class="language-csharp">class Ogretmen
+{
+    public string Ad;
+}
+
+class Ogrenci
+{
+    public string Ad;
+    public Ogretmen Danismani;  // ogrenci bir ogretmeni tanir ama sahiplenmez
+}
+</code></pre>
+
+<h3 id="aggregation-birlestirme">Aggregation (Birleştirme)</h3>
+<p>"Has-a" ilişkisi ama parçalar bağımsız yaşayabilir. Bir takımın oyuncuları var ama takım dağılsa oyuncular yok olmaz.</p>
+<pre class="codehilite"><code class="language-csharp">class Oyuncu
+{
+    public string Ad;
+}
+
+class Takim
+{
+    public string TakimAdi;
+    public List&lt;Oyuncu&gt; Oyuncular;  // takim oyunculara sahip ama onlari olusturmuyor
+
+    public Takim(string ad)
+    {
+        TakimAdi = ad;
+        Oyuncular = new List&lt;Oyuncu&gt;();
+    }
+
+    public void OyuncuEkle(Oyuncu oyuncu)
+    {
+        Oyuncular.Add(oyuncu);
+    }
+}
+</code></pre>
+
+<h3 id="composition-bilesim">Composition (Bileşim)</h3>
+<p>"Has-a" ilişkisi ama parçalar bütün olmadan yaşayamaz. Bir evin odaları var, ev yıkılırsa odalar da yok olur.</p>
+<pre class="codehilite"><code class="language-csharp">class Oda
+{
+    public string OdaAdi;
+
+    public Oda(string ad)
+    {
+        OdaAdi = ad;
+    }
+}
+
+class Ev
+{
+    private List&lt;Oda&gt; odalar;
+
+    public Ev()
+    {
+        // odalar Ev icinde olusturuluyor, Ev olmadan var olamazlar
+        odalar = new List&lt;Oda&gt;();
+        odalar.Add(new Oda(&quot;Salon&quot;));
+        odalar.Add(new Oda(&quot;Yatak Odası&quot;));
+        odalar.Add(new Oda(&quot;Mutfak&quot;));
+    }
+}
+</code></pre>
+
+<h3 id="dependency-bagmllk">Dependency (Bağımlılık)</h3>
+<p>Bir sınıf başka bir sınıfı geçici olarak kullanır, kalıcı bir sahiplik yok. Mesela bir yazıcı sınıfı, belge sınıfını parametre olarak alıp yazdırır.</p>
+<pre class="codehilite"><code class="language-csharp">class Belge
+{
+    public string Icerik;
+}
+
+class Yazici
+{
+    public void Yazdir(Belge belge)  // gecici kullanim, sahiplenmez
+    {
+        Console.WriteLine(&quot;Yazdırılıyor: &quot; + belge.Icerik);
+    }
+}
+</code></pre>
+
+<hr />
+<h2 id="sonuc">Sonuç</h2>
+<p>OOP'yi araştırınca aslında günlük hayattaki birçok şeyin zaten nesne mantığıyla çalıştığını fark ettim. Bir arabayı kullanırken içindeki karmaşık mekaniği bilmemize gerek yok (soyutlama ve kapsülleme), farklı araç tipleri ortak özellikleri paylaşıyor (kalıtım), aynı komuta farklı tepki veriyorlar (polimorfizm).</p>
+<p>Bu kavramları tek tek öğrenmek kolay gibi gözükse de asıl zorluk hangisini ne zaman kullanacağımızı bilmek. Özellikle composition vs inheritance kararı ve interface ile abstract class ayrımı pratikte deneyim gerektiren konular gibi duruyor. Bundan sonra yazdığım kodlarda bu prensipleri uygulamaya çalışacağım.</p>
+<hr />
+<p><em>Kaynaklar:</em></p>
+<ol>
+<li>
+<p>Microsoft, "Object-Oriented Programming (C#)", Microsoft Learn, https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/ (Erişim Tarihi: 25.10.2026)</p>
+</li>
+<li>
+<p>W3Schools, "C# OOP", https://www.w3schools.com/cs/cs_oop.php (Erişim Tarihi: 24.10.2026)</p>
+</li>
+<li>
+<p>GeeksforGeeks, "C# | Object Oriented Programming", https://www.geeksforgeeks.org/c-sharp-object-oriented-programming/ (Erişim Tarihi: 26.10.2026)</p>
+</li>
+<li>
+<p>Vikipedi, "Nesne Yönelimli Programlama", https://tr.wikipedia.org/wiki/Nesne_y%C3%B6nelimli_programlama (Erişim Tarihi: 24.10.2026)</p>
+</li>
+<li>
+<p>BTK Akademi, "C# Programlama Dersleri", https://www.btkakademi.gov.tr/ (Erişim Tarihi: 27.10.2026)</p>
+</li>
+<li>
+<p>Engin Demiroğ, "C# Eğitim Serisi", YouTube, https://www.youtube.com/@engindemirog (Erişim Tarihi: 26.10.2026)</p>
+</li>
+</ol>
+<hr />
+<p><strong>GitHub Repo:</strong> https://github.com/hasanaliyucel-06/Web-Programciligi-lll</p>
+</body>
+</html>
