@@ -602,30 +602,14 @@ Bu kavramları tek tek öğrenmek kolay gibi gözükse de asıl zorluk hangisini
 
 *Kaynaklar:*
 
-1. Microsoft, "C# Programlama Kılavuzu - Nesne Yönelimli Programlama", Microsoft Learn, https://learn.microsoft.com/tr-tr/dotnet/csharp/fundamentals/tutorials/oop (Erişim Tarihi: 25.10.2026)
+1. Microsoft, "Object-Oriented Programming (C#)", Microsoft Learn, https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/ (Erişim Tarihi: 25.10.2026)
 
-2. Microsoft, "Inheritance in C#", Microsoft Learn, https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/inheritance (Erişim Tarihi: 25.10.2026)
+2. W3Schools, "C# OOP", https://www.w3schools.com/cs/cs_oop.php (Erişim Tarihi: 24.10.2026)
 
-3. Microsoft, "Polymorphism", Microsoft Learn, https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/polymorphism (Erişim Tarihi: 26.10.2026)
+3. GeeksforGeeks, "C# | Object Oriented Programming", https://www.geeksforgeeks.org/c-sharp-object-oriented-programming/ (Erişim Tarihi: 26.10.2026)
 
-4. Microsoft, "Abstract and Sealed Classes and Class Members", Microsoft Learn, https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/abstract-and-sealed-classes-and-class-members (Erişim Tarihi: 26.10.2026)
+4. Vikipedi, "Nesne Yönelimli Programlama", https://tr.wikipedia.org/wiki/Nesne_y%C3%B6nelimli_programlama (Erişim Tarihi: 24.10.2026)
 
-5. Microsoft, "Interfaces - C# Reference", Microsoft Learn, https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/interface (Erişim Tarihi: 26.10.2026)
+5. BTK Akademi, "C# Programlama Dersleri", https://www.btkakademi.gov.tr/ (Erişim Tarihi: 27.10.2026)
 
-6. W3Schools, "C# OOP", https://www.w3schools.com/cs/cs_oop.php (Erişim Tarihi: 24.10.2026)
-
-7. Refactoring Guru, "What is OOP?", https://refactoring.guru/refactoring/what-is-refactoring (Erişim Tarihi: 27.10.2026)
-
-8. Turhan Can Kargın, "Nesne Yönelimli Programlama (OOP) Nedir?", Medium, https://medium.com/turkce/nesne-y%C3%B6nelimli-programlama-nedir-b15e9ff6be69 (Erişim Tarihi: 24.10.2026)
-
-9. Sadi Evren Şeker, "Nesneye Yönelik Programlama", Bilgisayar Kavramları, https://bilgisayarkavramlari.com/2008/11/28/nesneye-yonelik-programlama-object-oriented-programming/ (Erişim Tarihi: 27.10.2026)
-
-10. BTK Akademi, "C# ile Nesne Yönelimli Programlama", https://www.btkakademi.gov.tr/ (Erişim Tarihi: 25.10.2026)
-
-11. Engin Demiroğ, "C# ile Nesne Yönelimli Programlama", Udemy / YouTube, https://www.youtube.com/c/EnginDemirog (Erişim Tarihi: 26.10.2026)
-
-12. Murat Yücedağ, "C# Eğitim Kampı - OOP Dersleri", YouTube, https://www.youtube.com/c/MuratY%C3%BCceda%C4%9F (Erişim Tarihi: 27.10.2026)
-
-13. GeeksforGeeks, "Object Oriented Programming (OOPs) Concept in C#", https://www.geeksforgeeks.org/c-sharp-object-oriented-programming/ (Erişim Tarihi: 28.10.2026)
-
-14. Tutorialspoint, "C# - Object Oriented Programming", https://www.tutorialspoint.com/csharp/csharp_object_oriented.htm (Erişim Tarihi: 28.10.2026)
+6. Engin Demiroğ, "C# Eğitim Serisi", YouTube, https://www.youtube.com/@engindemirog (Erişim Tarihi: 26.10.2026)
