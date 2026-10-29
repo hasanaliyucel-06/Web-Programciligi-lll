@@ -61,6 +61,7 @@ namespace KutuphaneOtomasyonu
     /// </summary>
     public abstract class Kisi : IKisi
     {
+        // Kapsüllenmiş alanlar (Encapsulated fields)
         private string _ad;
         private string _soyad;
         private string _eposta;
@@ -113,12 +114,18 @@ namespace KutuphaneOtomasyonu
 
         public virtual string TamAd() => $"{Ad} {Soyad}";
 
+        /// <summary>
+        /// Polimorfizm örneği: Alt sınıflar bu metodu kendi ihtiyaçlarına göre ezebilir (override).
+        /// </summary>
         public virtual void BilgiYazdir()
         {
             Console.WriteLine($"[ID: {Id}] {TamAd()} | E-posta: {Eposta} | Tel: {Telefon}");
         }
     }
 
+    /// <summary>
+    /// Kisi sınıfından türeyen Uye sınıfı (Inheritance)
+    /// </summary>
     public class Uye : Kisi
     {
         public string UyeNo { get; private set; }
@@ -126,6 +133,8 @@ namespace KutuphaneOtomasyonu
         public DateTime UyelikTarihi { get; private set; }
         public bool AktifMi { get; set; }
         public decimal ToplamCezaBorcu { get; private set; }
+
+        // Aggregation: Üye aktif ödünç kayıtlarını referans olarak tutar
         public List<OduncKaydi> AktifOduncler { get; private set; }
 
         public Uye(int id, string ad, string soyad, string eposta, string telefon, string uyeNo, UyelikTipi tip)
@@ -174,11 +183,14 @@ namespace KutuphaneOtomasyonu
         }
     }
 
+    /// <summary>
+    /// Kisi sınıfından türeyen Kütüphaneci / Görevli sınıfı (Inheritance)
+    /// </summary>
     public class Kutuphaneci : Kisi
     {
         public string PersonelKodu { get; private set; }
         public string Unvan { get; set; }
-        public int YetkiSeviyesi { get; set; }
+        public int YetkiSeviyesi { get; set; } // 1: Standart Görevli, 2: Yönetici
 
         public Kutuphaneci(int id, string ad, string soyad, string eposta, string telefon, string personelKodu, string unvan, int yetkiSeviyesi = 1)
             : base(id, ad, soyad, eposta, telefon)
@@ -205,6 +217,9 @@ namespace KutuphaneOtomasyonu
 
     #region 3. Alan Modelleri: Kategori, Kitap ve Ödünç Kaydı
 
+    /// <summary>
+    /// Kitap kategorilerini temsil eden sınıf
+    /// </summary>
     public class Kategori
     {
         public int KategoriId { get; set; }
@@ -219,6 +234,10 @@ namespace KutuphaneOtomasyonu
         }
     }
 
+    /// <summary>
+    /// Kütüphanedeki kitap varlığını temsil eden sınıf
+    /// Association & Composition prensipleri: Kategori ile ilişkilidir
+    /// </summary>
     public class Kitap
     {
         public int KitapId { get; private set; }
@@ -257,17 +276,21 @@ namespace KutuphaneOtomasyonu
         public override string ToString() => $"[ISBN: {ISBN}] {Baslik} - {Yazar} ({YayinYili}) | Kategori: {Kategori?.Ad} | Stok: {StokAdedi}";
     }
 
+    /// <summary>
+    /// Uye ve Kitap arasındaki ilişkiyi yöneten işlem sınıfı (Junction Model)
+    /// </summary>
     public class OduncKaydi
     {
         public Guid IslemId { get; private set; }
-        public Uye Uye { get; private set; }
-        public Kitap Kitap { get; private set; }
+        public Uye Uye { get; private set; }             // Association: Üyeye referans
+        public Kitap Kitap { get; private set; }         // Association: Kitaba referans
         public DateTime OduncTarihi { get; private set; }
         public DateTime SonTeslimTarihi { get; private set; }
         public DateTime? TeslimTarihi { get; private set; }
         public OduncDurumu Durum { get; private set; }
         public decimal CezaTutari { get; private set; }
 
+        // Günlük sabit ceza katsayısı (TL)
         public const decimal GunlukGecikmeCezasi = 5.0m;
 
         public OduncKaydi(Uye uye, Kitap kitap, int gunSayisi = 15)
@@ -321,6 +344,9 @@ namespace KutuphaneOtomasyonu
 
     #region 4. Kütüphane Yönetim Servisi (Facade / Service Pattern)
 
+    /// <summary>
+    /// Kütüphane operasyonlarını koordine eden ana yönetim sınıfı
+    /// </summary>
     public class KutuphaneYonetimi : IOduncYonetimi
     {
         public string KutuphaneAdi { get; set; }
@@ -371,6 +397,56 @@ namespace KutuphaneOtomasyonu
 
             Console.WriteLine($"[İADE EDİLDİ] '{oduncKaydi.Kitap.Baslik}' iade alındı. Hesaplanan Ceza: {oduncKaydi.CezaTutari:C2}");
             return oduncKaydi.CezaTutari;
+        }
+    }
+
+    #endregion
+
+    #region 5. Örnek Senaryo Konsol Testi
+
+    public static class Program
+    {
+        public static void Main()
+        {
+            Console.WriteLine("===============================================================");
+            Console.WriteLine("     KÜTÜPHANE OTOMASYON SİSTEMİ - OOP MİMARİSİ DEMOSU        ");
+            Console.WriteLine("===============================================================\n");
+
+            // 1. Kütüphane ve Personel Kurulumu
+            var kutuphane = new KutuphaneYonetimi("Milli Kütüphane Bilgi Merkezi");
+            var gorevli = new Kutuphaneci(1, "Ahmet", "Yılmaz", "ahmet.yilmaz@kutuphane.gov.tr", "05551112233", "PER-101", "Kıdemli Kütüphaneci", 2);
+            kutuphane.Personeller.Add(gorevli);
+
+            // 2. Kategori ve Kitap Ekleme
+            var katYazilim = new Kategori(1, "Yazılım & Mühendislik", "Yazılım mimarisi ve tasarım kalıpları");
+            var katEdebiyat = new Kategori(2, "Dünya Edebiyatı", "Klasik ve modern romanlar");
+
+            var kitap1 = gorevli.YeniKitapKaydet("978-0132350884", "Clean Code", "Robert C. Martin", 2008, 3, katYazilim);
+            var kitap2 = gorevli.YeniKitapKaydet("978-0201633610", "Design Patterns", "GoF", 1994, 2, katYazilim);
+            kutuphane.Envanter.Add(kitap1);
+            kutuphane.Envanter.Add(kitap2);
+
+            // 3. Üye Tanımlama
+            var uye1 = new Uye(101, "Hasan Ali", "Yücel", "hasanali@universite.edu.tr", "05443332211", "UYE-2024-001", UyelikTipi.Ogrenci);
+            kutuphane.Uyeler.Add(uye1);
+
+            Console.WriteLine("\n--- Sistem Kullanıcı Bilgileri ---");
+            gorevli.BilgiYazdir();
+            uye1.BilgiYazdir();
+
+            // 4. Ödünç Alma Senaryosu
+            Console.WriteLine("\n--- Ödünç Alma İşlemi ---");
+            var islem1 = kutuphane.KitapOduncVer(uye1, kitap1, 15);
+            Console.WriteLine($"Kalan Stok ({kitap1.Baslik}): {kitap1.StokAdedi}");
+
+            // 5. İade ve Ceza Senaryosu
+            Console.WriteLine("\n--- İade İşlemi ---");
+            kutuphane.KitapTeslimAl(islem1);
+            Console.WriteLine($"İade Sonrası Stok ({kitap1.Baslik}): {kitap1.StokAdedi}");
+
+            Console.WriteLine("\n===============================================================");
+            Console.WriteLine("                DEMO BAŞARIYLA TAMAMLANDI                      ");
+            Console.WriteLine("===============================================================");
         }
     }
 

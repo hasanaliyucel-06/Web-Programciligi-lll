@@ -5,7 +5,7 @@
 > **Konu:** Yazılım Mühendisliğinde Görsel Modelleme Dilleri (UML 2.5) ve İlişkisel Veri Tabanı Tasarımı  
 > **Örnek Senaryo:** Kapsamlı Kütüphane Otomasyon Sistemi (Library Management System)  
 > **Uygulama Dili:** C# (.NET 8 / OOP)  
-> **Canlı Görsel Sunum:** [`../index.html`](../index.html)
+> **Canlı Görsel Sunum:** [`index.html`](./index.html)
 
 ---
 
