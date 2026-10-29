@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Programcılığı III - Araştırma Ödevi 1 | Hasan Ali Yücel</title>
+<style>
+    @page {
+        size: A4;
+        margin: 20mm 18mm 20mm 18mm;
+        @top-right {
+            content: "Hasan Ali Yücel (No: 256001054) | Web Programcılığı III";
+            font-family: 'Cambria', Georgia, serif;
+            font-size: 8.5pt;
+            color: #666;
+        }
+        @bottom-right {
+            content: "Sayfa " counter(page) " / " counter(pages) " | İmza: ....................";
+            font-family: 'Cambria', Georgia, serif;
+            font-size: 8.5pt;
+            color: #666;
+        }
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Cambria', 'Georgia', 'Times New Roman', serif;
+        font-size: 11pt;
+        line-height: 1.45;
+        color: #222;
+        background-color: #f7f9fc;
+        margin: 0;
+        padding: 0;
+    }
+
+    .no-print-bar {
+        background: #1f4e79;
+        color: #fff;
+        padding: 12px 20px;
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .print-btn {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+    .print-btn:hover {
+        background: #218838;
+    }
+
+    .page-container {
+        max-width: 860px;
+        margin: 25px auto;
+        background: #fff;
+        padding: 45px 55px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.06);
+        border-radius: 4px;
+    }
+
+    /* Üst Öğrenci Bilgi Tablosu */
+    .student-badge-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 25px;
+        background-color: #f8fafc;
+        border: 1px solid #d9e2ec;
+    }
+    .student-badge-table td {
+        padding: 8px 14px;
+        font-size: 10pt;
+        border: 1px solid #e2e8f0;
+    }
+
+    .doc-title {
+        text-align: center;
+        font-size: 17pt;
+        color: #103666;
+        font-weight: bold;
+        margin-bottom: 4px;
+        letter-spacing: -0.3px;
+    }
+    .doc-subtitle {
+        text-align: center;
+        font-size: 11pt;
+        color: #555;
+        font-style: italic;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #1f4e79;
+        padding-bottom: 12px;
+    }
+
+    h1 {
+        font-size: 13.5pt;
+        color: #103666;
+        border-bottom: 1.5px solid #d9e2ec;
+        padding-bottom: 4px;
+        margin-top: 26px;
+        margin-bottom: 10px;
+        page-break-after: avoid;
+    }
+
+    h2 {
+        font-size: 12pt;
+        color: #1f4e79;
+        margin-top: 18px;
+        margin-bottom: 6px;
+        page-break-after: avoid;
+    }
+
+    h3 {
+        font-size: 11pt;
+        color: #334e68;
+        margin-top: 14px;
+        margin-bottom: 4px;
+        page-break-after: avoid;
+    }
+
+    p {
+        margin: 0 0 8px 0;
+        text-align: justify;
+    }
+
+    ul, ol {
+        margin: 4px 0 10px 22px;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 5px;
+        text-align: justify;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0 16px 0;
+        font-size: 9pt;
+        page-break-inside: avoid;
+    }
+
+    th {
+        background-color: #1f4e79;
+        color: white;
+        padding: 7px 9px;
+        text-align: left;
+        border: 1px solid #173b5c;
+        font-weight: bold;
+    }
+
+    td {
+        padding: 6px 9px;
+        border: 1px solid #cbd5e1;
+        vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+        background-color: #f8fafc;
+    }
+
+    .badge-must {
+        background-color: #e2e8f0;
+        color: #0f172a;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 3px;
+        display: inline-block;
+        font-size: 8.5pt;
+    }
+    .badge-should {
+        background-color: #e0f2fe;
+        color: #0369a1;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 3px;
+        display: inline-block;
+        font-size: 8.5pt;
+    }
+    .badge-could {
+        background-color: #fef9c3;
+        color: #854d0e;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 3px;
+        display: inline-block;
+        font-size: 8.5pt;
+    }
+    .badge-wont {
+        background-color: #fee2e2;
+        color: #991b1b;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 3px;
+        display: inline-block;
+        font-size: 8.5pt;
+    }
+
+    .use-case-box {
+        border: 1px solid #cbd5e1;
+        margin: 14px 0 20px 0;
+        page-break-inside: avoid;
+    }
+    .use-case-box table {
+        margin: 0;
+    }
+    .use-case-header {
+        background-color: #1f4e79;
+        color: white;
+        padding: 7px 10px;
+        font-weight: bold;
+        font-size: 10pt;
+    }
+
+    .signature-box {
+        margin-top: 30px;
+        border-top: 1.5px solid #1f4e79;
+        padding-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 9.5pt;
+        page-break-inside: avoid;
+    }
+
+    @media print {
+        body {
+            background-color: #fff;
+            font-size: 10.5pt;
+        }
+        .no-print-bar {
+            display: none;
+        }
+        .page-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        h1 {
+            page-break-before: auto;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <div><strong>Web Programcılığı III — Araştırma Ödevi 1</strong> (Yazı Tipi: Cambria 11pt)</div>
+    <div>
+        <button class="print-btn" onclick="window.print()">🖨️ Sayfayı Yazdır / PDF Kaydet</button>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <table class="student-badge-table">
+        <tr>
+            <td style="width: 50%;"><strong>Ders:</strong> Web Programcılığı III</td>
+            <td style="width: 50%;"><strong>Öğrenci Adı Soyadı:</strong> Hasan Ali YÜCEL</td>
+        </tr>
+        <tr>
+            <td><strong>Ödev Konusu:</strong> Monolitik/Mikroservis Mimarileri ve Proje Analizi</td>
+            <td><strong>Öğrenci No:</strong> 256001054 &nbsp;|&nbsp; <strong>İmza:</strong> ....................</td>
+        </tr>
+    </table>
+
+    <div class="doc-title">WEB PROGRAMCILIĞI III — ARAŞTIRMA ÖDEVİ 1</div>
+    <div class="doc-subtitle">Yazılım Mimarileri (Monolitik & Mikroservis), Yatay/Dikey Ölçeklendirme ve Kapsamlı Proje Analizi</div>
+
+    <!-- BÖLÜM 1 -->
+    <h1>ARAŞTIRMA BÖLÜMÜ - 1: YAZILIM MİMARİLERİ VE ÖLÇEKLENDİRME</h1>
+
+    <h2>1. Monolitik Mimari ve Mikroservis Mimarisi Kavramları</h2>
+    <p>
+        <strong>Monolitik Mimari (Monolithic Architecture):</strong> Monolitik mimariyi en sade ve anlaşılır haliyle; bir yazılım projesindeki tüm bileşenlerin (kullanıcı arayüzü, iş kuralları mantığı, veritabanı erişim katmanı, yetkilendirme, sepet ve ödeme sistemleri gibi) tek bir kod tabanında (codebase) birleştirildiği, tek bir veritabanı şemasını paylaştığı ve sunucuya tek bir çalıştırılabilir dosya ya da paket (.dll, .war, tek bir container imajı vb.) halinde dağıtıldığı geleneksel mimari model olarak açıklayabilirim. Bu mimaride sınıflar ve katmanlar birbirinden farklı klasörlerde yer alsa bile aynı çalışma zamanı (runtime) ortamında, aynı işletim sistemi prosesinde ve aynı bellek alanında (RAM) birlikte yaşarlar.
+    </p>
+    <p>
+        Örneğin derste ASP.NET Core MVC ile yazdığımız bir projeyi ele alırsak; Controller sınıfları, DbContext veritabanı bağlantısı, modeller ve View dosyaları tek bir Visual Studio çözümü içindedir. Derle butonuna bastığımızda tek bir çıktı oluşur ve sunucuya yüklenir. Bu modelin en güçlü yönü, projenin ilk geliştirme evresinde ve küçük ekiplerde sağladığı muazzam hız ve kolaylıktır. Bilgisayarımızda tek tıkla hata ayıklama (debugging) yapabiliriz, metotlar arası çağrılar doğrudan RAM üzerinden nanosaniyelerde gerçekleşir ve ağ gecikmesi yaşanmaz. Dağıtım süreci tek bir dosyayı sunucuya kopyalamaktan ibarettir. Ancak proje büyüdükçe, kod hacmi yüz binlerce satırı aştıkça monolitik yapı hantallaşır. Sistemdeki ufacık bir kod hatası (örneğin kontrolsüz bir döngü) tüm sunucuyu kilitleyebilir ve yeni özellik eklemek diğer modülleri bozma riski nedeniyle büyük bir stres haline gelir.
+    </p>
+    <p>
+        <strong>Mikroservis Mimarisi (Microservices Architecture):</strong> Mikroservis mimarisi ise monolitik yapının tam tersine, büyük ve karmaşık bir yazılım ekosistemini iş kabiliyetlerine (Business Capabilities) göre sınırlandırılmış, her biri kendi başına bağımsız bir proses olarak çalışan, küçük ve gevşek bağlı (loosely coupled) servis parçacıklarına bölme yaklaşımıdır. Buradaki "mikro" tabiri kodun satır sayısının azlığından ziyade, servisin tek bir işe odaklanmasını (Tek Sorumluluk Prensibi - Single Responsibility) temsil eder.
+    </p>
+    <p>
+        Bir e-ticaret platformunu mikroservis yaklaşımıyla modellediğimizde; Kullanıcı Servisi, Ürün Servisi, Sepet Servisi, Ödeme Servisi ve Kargo Bildirim Servisi gibi tamamen izole projeler oluştururuz. Bu mimarinin altın kuralı her servisin kendine ait izole bir veritabanına sahip olmasıdır (Database-per-Service). Bir servis asla başka bir servisin veritabanına doğrudan SQL sorgusu atamaz; iletişim yalnızca iyi tanımlanmış hafif siklet ağ protokolleri (HTTP REST API, gRPC veya RabbitMQ/Kafka gibi asenkron mesaj kuyrukları) üzerinden gerçekleştirilir. Bu mimarinin en çarpıcı artısı bağımsız dağıtım (deployment) ve teknoloji özgürlüğüdür (Polyglot). Örneğin ürün arama ve yapay zeka tavsiye motorunu Python ile yazarken, yüksek hız ve eşzamanlılık gerektiren sipariş servisini C# (.NET Core) ile, hızlı bildirim kuyruğunu ise Go veya Node.js ile geliştirebiliriz. Bir serviste güncelleme yapıldığında sadece o servis canlıya alınır, sistemin geri kalanı kesintisiz çalışmaya devam eder. Buna karşılık mikroservisler; ağ gecikmeleri, dağıtık sistemlerde veri tutarlılığı sağlama zorunluluğu (Saga Pattern ihtiyacı), merkezi log izleme (Elasticsearch/Jaeger) ve servis keşfi gibi ciddi operasyonel karmaşıklıkları da beraberinde getirir.
+    </p>
+
+    <h2>2. Monolitik Mimaride Yatay ve Dikey Genişleme (Ölçeklendirme) ve Aralarındaki Farklar</h2>
+    <p>
+        Yazdığımız bir monolitik web uygulaması başlangıçta günlük birkaç yüz kullanıcıya rahatça yanıt verebilirken, kampanya zamanlarında veya kullanıcı sayısı hızla arttığında sunucunun donanım kaynakları (CPU, RAM, Disk I/O) tükenir ve sistem ya aşırı yavaşlar ya da "502 Bad Gateway / Connection Timeout" hatalarıyla çöker. Bu darboğazı aşmak için uygulanan iki temel genişleme stratejisi bulunmaktadır:
+    </p>
+    <ul>
+        <li>
+            <strong>Dikey Genişleme (Vertical Scaling - Scale-Up):</strong> Mevcut uygulamanın koşturulduğu tek bir fiziksel sunucunun veya sanal makinenin donanımsal gücünü artırmaktır. Örneğin 8 GB RAM'e sahip sunucuyu 64 GB veya 128 GB RAM'e çıkarmak, 4 çekirdekli işlemci yerine 32 çekirdekli daha güçlü bir işlemci takmak ve diskleri yüksek hızlı NVMe SSD'lere yükseltmektir. Bunu mevcut tek nakliye kamyonumuzun motorunu büyütmeye ve şasisini güçlendirmeye benzetebiliriz. <em>Avantajı;</em> yazılımın kodunda ve mimarisinde hiçbir değişiklik gerektirmemesidir; kod aynı kalır, daha güçlü makinede çalışır. <em>Dezavantajı;</em> dikey büyümenin donanımsal ve fiziksel bir sınırı vardır (anakartın ve pazarın sunduğu en yüksek konfigürasyon sınırı). Ayrıca donanım güçlendikçe maliyet üstel (katlanarak) artar. Yükseltme esnasında sunucunun kapatılması gerektiğinden kesinti (downtime) kaçınılmazdır ve sistem hâlâ "Tek Hata Noktası" (Single Point of Failure) durumundadır; tek sunucu bozulursa tüm platform durur.
+        </li>
+        <li>
+            <strong>Yatay Genişleme (Horizontal Scaling - Scale-Out):</strong> Tek bir süper bilgisayar inşa etmek yerine, sisteme aynı monolitik uygulamanın kopyalarını çalıştıran birden fazla bağımsız ve uygun maliyetli sunucu (node) dahil etmektir. Bunu filomuza aynı işi yapan yeni ticari araçlar katmaya benzetebiliriz. Yatay genişlemede gelen kullanıcı isteklerini bu sunuculara dengeli dağıtmak için sunucuların önüne mutlaka bir <strong>Yük Dengeleyici (Load Balancer - Nginx, HAProxy, AWS ALB)</strong> yerleştirilir. <em>Avantajı;</em> teorik olarak sınırsız ölçekleme imkanı sunması ve yüksek erişilebilirliktir (High Availability). Sunuculardan ikisi çökse bile diğer sunucular trafiği karşılar ve sistem ayakta kalır. Trafik düşünce sunucu sayısı azaltılarak bulut maliyetleri optimize edilir (elastikiyet). <em>Zorluğu;</em> yazılımın mutlaka "Durumsuz" (Stateless) tasarlanmış olmasını zorunlu kılmasıdır. Kullanıcı oturum bilgileri (Session) yerel sunucu belleğinde (In-Memory) tutulursa, kullanıcı ikinci istekte başka bir sunucuya yönlendirildiğinde oturumu düşer. Bu nedenle oturumlar Redis gibi harici merkezi bir önbelleğe taşınmalı, yüklenen medya dosyaları ise ortak bir bulut depolama alanına (S3 / Storage) aktarılmalıdır.
+        </li>
+    </ul>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Karşılaştırma Kriteri</th>
+                <th style="width: 37%;">Dikey Genişleme (Scale-Up)</th>
+                <th style="width: 38%;">Yatay Genişleme (Scale-Out)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Temel Yaklaşım</strong></td>
+                <td>Mevcut tek sunucunun donanımını (CPU, RAM, Disk) artırmak.</td>
+                <td>Aynı uygulamayı koşturan yeni sunucu kopyaları (node) eklemek.</td>
+            </tr>
+            <tr>
+                <td><strong>Maliyet Modeli</strong></td>
+                <td>Üst segment donanımlarda maliyet astronomik şekilde artar.</td>
+                <td>Ekonomik, standart donanımlarla doğrusal ve elastik maliyet.</td>
+            </tr>
+            <tr>
+                <td><strong>Yazılımsal Değişiklik</strong></td>
+                <td>Kodda ve mimaride hiçbir değişiklik gerektirmez.</td>
+                <td>Stateless mimari, Load Balancer ve merkezi Redis oturumu gerekir.</td>
+            </tr>
+            <tr>
+                <td><strong>Hizmet Kesintisi</strong></td>
+                <td>Donanım takviyesi esnasında genellikle sunucu kapatılır (downtime).</td>
+                <td>Sistem çalışırken yeni sunucu eklenebilir / çıkarılabilir (Zero-Downtime).</td>
+            </tr>
+            <tr>
+                <td><strong>Hata Toleransı (SPOF)</strong></td>
+                <td>Tek hata noktasıdır; sunucu arızalanırsa tüm hizmet kesilir.</td>
+                <td>Yedekli yapı vardır; çöken sunucunun yükünü diğerleri devralır.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Mikroservis ve Monolitik Mimari Arasındaki Farklar</h2>
+    <p>Araştırmalarım ve analizlerim sonucunda iki mimari arasındaki temel ayrımları 5 kritik başlıkta toplayabilirim:</p>
+    <ul>
+        <li>
+            <strong>1. Kod Tabanı ve Dağıtım (Deployment) Esnekliği:</strong> Monolitte tüm işlevler tek bir repository'de toplanır; küçük bir CSS veya metot değişikliğinde dahi tüm uygulamanın baştan derlenip koca paketin canlıya alınması gerekir. Mikroserviste ise her servisin kendi bağımsız deposu ve CI/CD boru hattı vardır; sadece ilgili servis dakikalar içinde güncellenir.
+        </li>
+        <li>
+            <strong>2. Veritabanı ve Veri Bütünlüğü Modeli:</strong> Monolitik mimari tek bir ilişkisel veritabanına bağlıdır; tablolar arası JOIN'ler ve ACID garantili transaction'lar ile veri bütünlüğü çok kolay sağlanır. Mikroserviste ise her servisin kendi izole veri tabanı vardır (Database-per-Service); doğrudan JOIN yapılamaz, veri tutarlılığı anlık değil "Eventual Consistency" (zamanla tutarlı) modeline dayanır ve dağıtık transaction'lar Saga deseniyle yönetilir.
+        </li>
+        <li>
+            <strong>3. Hata İzolasyonu ve Çökme Etkisi (Blast Radius):</strong> Monolitik uygulamada fırlatılan ve yakalanmayan kritik bir istisna ya da bellek sızıntısı (memory leak) tüm sunucuyu kilitleyip tüm sistemi çökertebilir. Mikroservis mimarisinde hata alanı izoledir; örneğin "Ürün Yorum Servisi" aşırı yükten çökse dahi "Sepet ve Ödeme Servisleri" bağımsız konteynerlarında sorunsuz çalışmaya devam eder ve satışlar durmaz.
+        </li>
+        <li>
+            <strong>4. Ölçeklendirme Hassasiyeti ve Kaynak Tüketimi:</strong> Monolitte sadece ödeme veya arama modülü yoğunlaştığında bile tüm monolit uygulamayı kopyalamak gerekir, bu da atıl modüllerin boş yere kaynak tüketmesine yol açar. Mikroserviste ise yalnızca darboğaz yaşayan servise (örneğin kampanya zamanı Ürün Arama Servisine) yüzlerce pod/kopya atanabilir.
+        </li>
+        <li>
+            <strong>5. Teknoloji Çeşitliliği ve Ekip Otonomisi:</strong> Monolitte tüm ekip tek bir dil ve çatıya (.NET, Java vb.) bağımlıdır ve ortak kod üzerinde sürekli git çakışmaları yaşanır. Mikroserviste her servis işe en uygun teknolojiyle (Polyglot) geliştirilebilir ve küçük otonom ekipler (Two-Pizza Teams) birbirini beklemeden paralel çalışabilir.
+        </li>
+    </ul>
+
+    <!-- BÖLÜM 2 -->
+    <div class="page-break"></div>
+    <h1>ARAŞTIRMA BÖLÜMÜ - 2: KAPSAMLI PROJE ANALİZİ</h1>
+
+    <h2>1. Belirlenen Proje ve Genel Tanıtımı</h2>
+    <p>
+        <strong>Proje Adı:</strong> <em>"NovaPazar: Çok Satıcılı (Multi-Vendor) B2C E-Ticaret, Dinamik Stok ve Akıllı Sipariş Yönetim Platformu"</em>
+    </p>
+    <p>
+        Basit ve statik bir web sitesinin ötesinde; binlerce bağımsız mağazanın kendi ürün varyantlarını yönetebildiği, yüz binlerce tüketicinin anlık filtrelerle arama yapıp güvenli ödeme gerçekleştirdiği, arka planda dinamik stok rezervasyonu, kargo barkodlama ve satıcı hakediş mutabakatı gibi karmaşık kuralları işleten uçtan uca modern bir e-ticaret ekosistemidir.
+    </p>
+
+    <h2>2. Projenin Amacı</h2>
+    <p>
+        NovaPazar projesinin amacı; yerel işletmeleri, butik üreticileri ve KOBİ'leri modern dijital ticaret altyapısıyla donatarak büyük pazaryeri tekellerine karşı adil komisyon oranlarıyla rekabet edebilir kılmaktır. Sistem; stok çakışmalarını sıfıra indiren akıllı envanter algoritmaları, BDDK uyumlu şeffaf ödeme ve otomatik kargo barkodlama altyapısıyla hem satıcıların operasyonel iş yükünü hafifletmeyi hem de tüketicilere yıldırım hızında, güvenli bir alışveriş deneyimi sunmayı hedefler.
+    </p>
+
+    <h2>3. Projenin Kapsamı</h2>
+    <ul>
+        <li>
+            <strong>Kapsam Dahilinde Olanlar (In-Scope):</strong> Kullanıcı ve Rol Yönetimi (Alıcı, Satıcı, Admin, Destek - JWT & 2FA), Ürün Kataloğu ve Varyant Yönetimi (Beden/Renk, Elasticsearch anlık arama), Sepet ve Dinamik Promosyon Motoru, Güvenli Ödeme ve Sanal POS Entegrasyonu (Iyzico/PayTR, 3D Secure, taksit), Sipariş ve Dağıtık Stok Yönetimi (Pessimistic/Redis kilitlemeli stok rezervasyonu), Kargo API Entegrasyonu (Aras, MNG, Yurtiçi otomatik takip ve barkod üretimi), Satıcı Yönetim Portalı (Envanter, sipariş, finansal hakediş raporu) ve Yönetici Denetim Paneli.
+        </li>
+        <li>
+            <strong>Kapsam Dışında Bırakılanlar (Out-of-Scope):</strong> Fiziksel kurye/araç takip donanımı ve depo raflama altyapısı (kargo firmalarının mevcut web servisleri entegre edilecektir), satıcıların iç muhasebe ERP/üretim sistemleri (yalnızca standart e-Fatura/e-Arşiv XML/PDF aktarım API'si sağlanır) ve sıfırdan bir bankacılık altyapısı kurmak (lisanslı ödeme kuruluşlarının API'leri kullanılacaktır).
+        </li>
+    </ul>
+
+    <h2>4. Projenin Çözümlediği Problem</h2>
+    <ul>
+        <li>
+            <strong>1. Eşzamanlı Stok Çakışması ve Fazladan Satış (Over-Selling):</strong> İndirim dönemlerinde aynı ürünü aynı saniyede birden çok kişinin satın alması sonucu stok eksiye düşmekte ve siparişler zorunlu iptal edilmektedir. NovaPazar, veritabanı kilit mekanizması ve 15 dakikalık sepet rezervasyonu ile bu sorunu tamamen engeller.
+        </li>
+        <li>
+            <strong>2. Yüksek Satıcı Komisyonları ve Finansal Nakit Blokajı:</strong> Dev pazaryerlerindeki %25-30 komisyonlar ve 45 günlük hakediş vadeleri KOBİ'lerin nakit akışını tıkamaktadır. Platformumuz, düşük komisyon modeli ve haftalık otomatik mutabakat sunar.
+        </li>
+        <li>
+            <strong>3. Alıcı Güvensizliği ve Kargo Takipsizliği:</strong> Müşterilerin sipariş sonrası kargonun nerede olduğunu bilememesi ve sahte yorumlar nedeniyle yaşadığı güvensizlik, şeffaf adım adım bildirim ve onaylı alışveriş yorumu kuralıyla aşılmaktadır.
+        </li>
+    </ul>
+
+    <h2>5. Projenin Hedef Kitlesi</h2>
+    <ul>
+        <li><strong>Bireysel Alıcılar (Tüketiciler):</strong> İnternet üzerinden uygun fiyatlı, taksitli ve güvenli alışveriş yapmak isteyen 18-65 yaş arası son kullanıcılar (mobil öncelikli arayüz).</li>
+        <li><strong>Mağaza Sahipleri ve Satıcılar (KOBİ'ler):</strong> Fiziksel dükkanını internete taşımak isteyen yerel esnaf, üreticiler ve bağımsız butikler.</li>
+        <li><strong>Platform Operatörleri ve Yöneticiler:</strong> Sistem güvenliğini, mağaza evraklarını, komisyon mutabakatlarını ve yasal uyumu denetleyen şirket içi operasyon ekibi.</li>
+    </ul>
+
+    <h2>6. Proje Zaman Planı (16 Haftalık SDLC Planı)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 22%;">Faz / Aşama</th>
+                <th style="width: 18%;">Zaman Aralığı</th>
+                <th style="width: 32%;">Yapılacak Temel Aktiviteler</th>
+                <th style="width: 28%;">Teslim Edilecek Çıktılar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Faz 1: Analiz & Gereksinim</strong></td>
+                <td>Hafta 1 - 3</td>
+                <td>Paydaş görüşmeleri, pazar araştırması, 24 gereksinimin MoSCoW sınıflandırması ve Use Case modelleri.</td>
+                <td>Gereksinim Belirtim Dokümanı (SRS), Use Case Şemaları.</td>
+            </tr>
+            <tr>
+                <td><strong>Faz 2: Tasarım & Mimari</strong></td>
+                <td>Hafta 4 - 6</td>
+                <td>Veritabanı ER diyagramı, mikroservis/API mimarisi, Figma kullanıcı deneyimi (UI/UX) ekran tasarımları.</td>
+                <td>Veritabanı Şeması, Figma Ekranları, Mimari Tasarım Raporu.</td>
+            </tr>
+            <tr>
+                <td><strong>Faz 3: Geliştirme (Sprintler)</strong></td>
+                <td>Hafta 7 - 12 (6 Hafta)</td>
+                <td>Sprint 1: Auth & Roller<br>Sprint 2: Katalog & Arama<br>Sprint 3: Sepet & Ödeme<br>Sprint 4: Sipariş, Kargo & Panel</td>
+                <td>Çalışan Kaynak Kodlar, REST API Uç Noktaları, Yönetim Paneli.</td>
+            </tr>
+            <tr>
+                <td><strong>Faz 4: Test & Doğrulama</strong></td>
+                <td>Hafta 13 - 14</td>
+                <td>Birim (Unit) testleri, Sanal POS simülasyonları, JMeter yük/stres testleri ve Kullanıcı Kabul Testleri (UAT).</td>
+                <td>Test Sonuç Raporu, Hata Giderme Günlüğü, Güvenlik Raporu.</td>
+            </tr>
+            <tr>
+                <td><strong>Faz 5: Dağıtım & Kapanış</strong></td>
+                <td>Hafta 15 - 16</td>
+                <td>Bulut sunucu kurulumu (Docker/K8s), CI/CD devreye alma, satıcı kullanım kılavuzları ve Go-Live.</td>
+                <td>Canlıda Çalışan Sistem, Satıcı Kılavuzu, Proje Kapanış Sunumu.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>7. Proje Gereksinimleri (24 Adet) ve MoSCoW Sınıflandırması</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 10%;">Kod</th>
+                <th style="width: 44%;">Gereksinim Tanımı ve Detayı</th>
+                <th style="width: 18%;">MoSCoW Sınıfı</th>
+                <th style="width: 28%;">Öncelik Gerekçesi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>G01</strong></td><td>Kullanıcı Kayıt, Giriş ve Rol Tabanlı Kimlik Doğrulama (JWT & bcrypt).</td><td><span class="badge-must">Must Have (M)</span></td><td>Sistem güvenliği ve alıcı-satıcı rollerinin ayrılması için temel altyapı.</td></tr>
+            <tr><td><strong>G02</strong></td><td>Ürün Ekleme, Varyant Tanımlama (Beden, Renk) ve Çoklu Görsel Yükleme.</td><td><span class="badge-must">Must Have (M)</span></td><td>E-ticaretin varlık sebebi; ürün olmadan satış ve katalog var olamaz.</td></tr>
+            <tr><td><strong>G03</strong></td><td>Kategori Hiyerarşisi ve Dinamik Arama / Filtreleme Motoru.</td><td><span class="badge-must">Must Have (M)</span></td><td>Kullanıcının aradığı ürünü bulabilmesi platformun en temel fonksiyonudur.</td></tr>
+            <tr><td><strong>G04</strong></td><td>Sepet Yönetimi ve Eşzamanlı Dinamik Stok Rezervasyon Mekanizması.</td><td><span class="badge-must">Must Have (M)</span></td><td>Satın alma kararı ve mükerrer satışı (over-selling) önlemek için zorunlu.</td></tr>
+            <tr><td><strong>G05</strong></td><td>BDDK Lisanslı Sanal POS Entegrasyonu ve 3D Secure ile Ödeme Tahsilatı.</td><td><span class="badge-must">Must Have (M)</span></td><td>Ticari gelirin elde edilmesi ve yasal mevzuata uyum için şarttır.</td></tr>
+            <tr><td><strong>G06</strong></td><td>Sipariş Oluşturma, Sipariş Özeti ve Müşteri Durum Takip Ekranı.</td><td><span class="badge-must">Must Have (M)</span></td><td>Ödeme sonrası yasal mesafeli satış sözleşmesi ve tüketici hakkı için zorunlu.</td></tr>
+            <tr><td><strong>G07</strong></td><td>Müşteri Sipariş İptali ve Otomatik Para İadesi / Stok Yenileme Süreci.</td><td><span class="badge-must">Must Have (M)</span></td><td>Tüketici Hakları Kanunu gereği yasal zorunluluk ve operasyonel ihtiyaç.</td></tr>
+            <tr><td><strong>G08</strong></td><td>Satıcı Mağaza Başvuru, Vergi Levhası Doğrulama ve Yönetici Onayı.</td><td><span class="badge-must">Must Have (M)</span></td><td>Pazaryerinde dolandırıcılığı önlemek ve yasal satıcılarla çalışmak için şart.</td></tr>
+            <tr><td><strong>G09</strong></td><td>Kargo Firmaları API Entegrasyonu (Otomatik Barkod ve Takip Kodu).</td><td><span class="badge-should">Should Have (S)</span></td><td>Sipariş teslimatının manuel takibini önleyip operasyonu hızlandırır.</td></tr>
+            <tr><td><strong>G10</strong></td><td>Dinamik İndirim Kuponu, Promosyon ve Kampanya Motoru.</td><td><span class="badge-should">Should Have (S)</span></td><td>Pazarlama ve müşteri sadakatini artırmak için çok kritik fonksiyondur.</td></tr>
+            <tr><td><strong>G11</strong></td><td>Yalnızca Ürünü Satın Alan Onaylı Müşterilerin Yorum ve Puan Verebilmesi.</td><td><span class="badge-should">Should Have (S)</span></td><td>Sahte yorumları engelleyerek platform güvenilirliğini üst seviyeye çıkarır.</td></tr>
+            <tr><td><strong>G12</strong></td><td>Sipariş Durum Değişikliklerinde Otomatik SMS ve E-posta Bildirimi.</td><td><span class="badge-should">Should Have (S)</span></td><td>Müşteri bilgilendirmesi ve çağrı merkezi yükünü azaltmak için gereklidir.</td></tr>
+            <tr><td><strong>G13</strong></td><td>Satıcı Mağaza Finansal Paneli (Satışlar, Komisyon Kesintisi ve Bakiye).</td><td><span class="badge-should">Should Have (S)</span></td><td>Satıcıların finansal şeffaflığı görmesi ve mutabakat için önemlidir.</td></tr>
+            <tr><td><strong>G14</strong></td><td>Favori Ürünler Listesi (Wishlist) ve Fiyatı Düşünce Haber Ver Alarmı.</td><td><span class="badge-should">Should Have (S)</span></td><td>Kullanıcı etkileşimini ve satışa dönüşüm oranlarını artırır.</td></tr>
+            <tr><td><strong>G15</strong></td><td>Sosyal Medya Hesapları (Google, Apple) ile Hızlı Tek Tıkla Giriş (OAuth2).</td><td><span class="badge-could">Could Have (C)</span></td><td>Kayıt olma sürtünmesini azaltır, ilk sürümde olmasa da sistem yürür.</td></tr>
+            <tr><td><strong>G16</strong></td><td>Yapay Zeka Tabanlı 'Bunu Alanlar Şunları da Aldı' Tavsiye Motoru.</td><td><span class="badge-could">Could Have (C)</span></td><td>Sepet ortalama tutarını artırır ancak ilk açılışta zorunlu değildir.</td></tr>
+            <tr><td><strong>G17</strong></td><td>Canlı Sohbet (Live Chat) ve Müşteri Destek Talep (Ticket) Sistemi.</td><td><span class="badge-could">Could Have (C)</span></td><td>Destek e-posta ile de yürütülebilir, zaman kalırsa eklenecektir.</td></tr>
+            <tr><td><strong>G18</strong></td><td>Çoklu Para Birimi (USD, EUR) ve Çok Dilli Arayüz (İngilizce/Türkçe).</td><td><span class="badge-could">Could Have (C)</span></td><td>Yurt dışı açılımı için iyidir, yerel başlangıçta şart değildir.</td></tr>
+            <tr><td><strong>G19</strong></td><td>PWA (Progressive Web App) Desteği ile Mobil Tarayıcıdan Yüklenme.</td><td><span class="badge-could">Could Have (C)</span></td><td>Mobil kullanıcı deneyimini iyileştirir fakat responsive tasarım yeterlidir.</td></tr>
+            <tr><td><strong>G20</strong></td><td>Sesli Komut ile Ürün Arama ve Sesli Alışveriş Asistanı Entegrasyonu.</td><td><span class="badge-wont">Won't Have (W)</span></td><td>Mevcut faz için yüksek maliyetli ve karmaşık; sonraki sürümlere bırakıldı.</td></tr>
+            <tr><td><strong>G21</strong></td><td>Kripto Para (Bitcoin, USDT) ile Anonim Ödeme Seçeneği.</td><td><span class="badge-wont">Won't Have (W)</span></td><td>Mevcut yasal regülasyonlar ve vergi mevzuatı nedeniyle kapsam dışıdır.</td></tr>
+            <tr><td><strong>G22</strong></td><td>Satıcı Kuryeleri İçin Canlı GPS Harita Üzerinde Canlı Kurye Takibi.</td><td><span class="badge-wont">Won't Have (W)</span></td><td>Yemek dağıtım platformu değiliz, standart kargo API'si yeterlidir.</td></tr>
+            <tr><td><strong>G23</strong></td><td>Fiziksel Mağazalar İçin Donanımsal Masaüstü Kasa Satış (POS) Sistemi.</td><td><span class="badge-wont">Won't Have (W)</span></td><td>Proje sadece dijital web ortamına odaklanmıştır, masaüstü POS yapılmayacaktır.</td></tr>
+            <tr><td><strong>G24</strong></td><td>Artırılmış Gerçeklik (AR) ile Odada Ürün Önizleme / Sanal Deneme.</td><td><span class="badge-wont">Won't Have (W)</span></td><td>Teslim takvimini aşacağı için kesinlikle sonraki yıllara ertelenmiştir.</td></tr>
+        </tbody>
+    </table>
+
+    <h2>8. Gereksinimlerin Türlerine Göre Yeniden Sınıflandırılması</h2>
+    <h3>A) İş Gereksinimleri (Business Requirements)</h3>
+    <p>Platformu kuran işletmenin ticari hedeflerini, kârlılık stratejisini ve yasal uyumunu tanımlar:</p>
+    <ul>
+        <li><strong>G05 (Ödeme ve Komisyon Kesintisi):</strong> Platformun ticari sürdürülebilirliğini sağlamak ve satılan ürünlerden %8-12 oranında komisyon kesintisini otomatik tahsil etmek.</li>
+        <li><strong>G08 (Satıcı Doğrulama ve Yasal Uyum):</strong> Satıcıların vergi levhası ve IBAN bilgilerini doğrulayarak Ticaret Bakanlığı ETBİS kurallarına tam uyum sağlamak.</li>
+        <li><strong>G13 (Satıcı Hakediş Mutabakatı):</strong> Haftalık satıcı hakedişlerini şeffaf biçimde hesaplayarak platform ile mağazalar arasındaki nakit akışını hatasız yürütmek.</li>
+        <li><strong>G17 (Müşteri Memnuniyeti ve İhtilaf Çözümü):</strong> Müşteri şikayetlerini yasal süre içinde çözüme kavuşturarak platform marka güvenilirliğini korumak.</li>
+        <li><strong>G21 (Yasal Mevzuat ve Risk Sınırı):</strong> Finansal regülasyonlar izin vermediği ve vergi takibi yapılamadığı için kripto para ile ödemeyi ilk aşamada kesin olarak reddetmek.</li>
+    </ul>
+
+    <h3>B) Kullanıcı Odaklı Gereksinimler (User Requirements)</h3>
+    <p>Alıcı ve satıcıların sistemi kullanırken ne beklediğini ve nasıl bir deneyim yaşamak istediğini tanımlar:</p>
+    <ul>
+        <li><strong>G01 & G15 (Hesap Yönetimi ve Hızlı Giriş):</strong> Alıcılar tek bir formla veya Google/Apple ile hızlıca üye olabilmeli, şifrelerini güvenle sıfırlayabilmelidir.</li>
+        <li><strong>G03 (Kolay Ürün Arama ve Filtreleme):</strong> Alıcılar ilgilendikleri ürünleri binlerce seçenek arasından kategori, fiyat aralığı, marka ve kullanıcı puanına göre anında süzebilmelidir.</li>
+        <li><strong>G09 (Şeffaf Kargo Takip İhtiyacı):</strong> Müşteriler sipariş ettikleri ürünün hangi kargo şubesinde ve hangi dağıtım aşamasında olduğunu canlı olarak görebilmelidir.</li>
+        <li><strong>G11 (Doğrulanmış Müşteri Yorumları):</strong> Alıcılar yalnızca ürünü gerçekten satın almış kişilerin yaptığı doğrulanmış yorumlara ve fotoğraflara güvenebilmelidir.</li>
+        <li><strong>G14 (Favori Listesi ve Fiyat Alarmı):</strong> Kullanıcılar beğendikleri ürünleri favoriye alıp indirim olduğunda otomatik haber almak istemektedir.</li>
+    </ul>
+
+    <h3>C) Fonksiyonel Gereksinimler (Functional Requirements)</h3>
+    <p>Sistemin gerçekleştirmesi gereken somut teknik süreçleri, algoritmaları ve girdi-çıktı mantığını tanımlar:</p>
+    <ul>
+        <li><strong>G02 (Ürün ve Varyant Girişi):</strong> Satıcı panelinde girilen beden, renk, stok adedi ve görsellerin veritabanına ve bulut depolama sunucusuna işlenmesi.</li>
+        <li><strong>G04 (Sepet ve Dinamik Stok Rezervasyonu):</strong> Kullanıcı sepete ürün eklediğinde veritabanında "ReservedStock" alanının artırılması ve 15 dakikalık geri sayım başlatılması.</li>
+        <li><strong>G05 & G06 (Sanal POS Ödeme ve Sipariş Kaydı):</strong> Sanal POS API'sine SHA-512 şifreli hash parametreleriyle istek atılması, bankadan dönen 3D callback sonucunun doğrulanması ve kalıcı sipariş kaydı üretilmesi.</li>
+        <li><strong>G07 (İptal, Para İadesi ve Stok Restorasyonu):</strong> Kargoya verilmemiş siparişlerde iptal butonuna basıldığında banka iade API'sinin tetiklenmesi, sipariş durumunun "İptal Edildi"ye çekilmesi ve stok sayacının otomatik 1 artırılması.</li>
+        <li><strong>G10 (Kupon ve İndirim Motoru):</strong> Sepet toplamında tanımlı kampanya kurallarının (ör. "500 TL üzeri 50 TL indirim") ve kupon kodunun matematiksel olarak uygulanması.</li>
+        <li><strong>G12 (Otomatik Bildirim Motoru):</strong> Sipariş durumu değiştiğinde asenkron kuyruk üzerinden müşteriye SMS ve şablon e-posta tetiklenmesi.</li>
+    </ul>
+
+    <h3>D) Fonksiyonel Olmayan Gereksinimler (Non-Functional Requirements)</h3>
+    <p>Sistemin genel kalite niteliklerini, performans, güvenlik ve ölçeklenebilirlik standartlarını tanımlar:</p>
+    <ul>
+        <li><strong>Performans ve Hız Kriteri:</strong> Sistem mimarisi anlık 10.000 eşzamanlı aktif kullanıcıyı desteklemeli; ürün listeleme ve arama sorguları ortalama 200 milisaniyenin altında yanıt vermelidir.</li>
+        <li><strong>Güvenlik ve Gizlilik (Security):</strong> Kredi kartı verileri kesinlikle sunucularda saklanmayacaktır (PCI-DSS Uyumlu). Şifreler en az 12 tuzlama faktörlü bcrypt algoritması ile hash'lenecektir. Tüm ağ trafiği TLS 1.3 / HTTPS üzerinden şifrelenecektir.</li>
+        <li><strong>Güvenilirlik ve Yedeklilik (Reliability):</strong> Sistem yılda en az %99.9 erişilebilirlik (High Availability) sağlamalıdır. Her gece saat 03:00'te otomatik artımlı veritabanı yedeği şifreli olarak harici buluta alınmalıdır.</li>
+        <li><strong>Kullanılabilirlik (Usability):</strong> Arayüz responsive yapıda olmalı; masaüstü, tablet ve mobil ekranlarda akıcı bir şekilde çalışmalıdır.</li>
+    </ul>
+
+    <!-- USE CASES -->
+    <div class="page-break"></div>
+    <h1>9. Seçilen 3 Fonksiyonel Gereksinim İçin Kullanım Senaryoları (Use Cases)</h1>
+
+    <!-- UC-01 -->
+    <h2>KULLANIM SENARYOSU 1 (UC-01): Sepete Ürün Ekleme ve Dinamik Stok Kontrolü</h2>
+    <div class="use-case-box">
+        <table>
+            <tr><th colspan="2">UC-01: Sepete Ürün Ekleme ve Anlık Stok Rezervasyonu</th></tr>
+            <tr><td style="width: 25%;"><strong>İlişkili Gereksinim:</strong></td><td style="width: 75%;">G04 (Must Have - Fonksiyonel Gereksinim)</td></tr>
+            <tr><td><strong>Aktörler:</strong></td><td>Birincil Aktör: Alıcı (Kayıtlı veya Misafir) | İkincil Aktör: Envanter/Stok Yönetim Servisi</td></tr>
+            <tr><td><strong>Ön Koşullar:</strong></td><td>1. Kullanıcı ürün detay sayfasını tarayıcısında açmış olmalıdır.<br>2. İlgili ürün varyantına (ör. Beden: M, Renk: Siyah) ait sistemde aktif stok bulunmalıdır.</td></tr>
+            <tr><td><strong>Son Koşullar:</strong></td><td>1. Ürün kullanıcının sepetine eklenir ve sepet tutarı yeniden hesaplanır.<br>2. Veritabanındaki 'AvailableStock' düşülüp 'ReservedStock' 15 dakika süreliğine 1 artırılır.</td></tr>
+            <tr><td><strong>Tetikleyici:</strong></td><td>Kullanıcının ürün detay sayfasındaki "Sepete Ekle" butonuna tıklaması.</td></tr>
+            <tr>
+                <td><strong>Ana Başarı Akışı (Happy Path):</strong></td>
+                <td>
+                    1. Kullanıcı ürün detay sayfasında istediği varyantı (ör. Ayakkabı Numarası: 42) ve adedi seçer.<br>
+                    2. Kullanıcı "Sepete Ekle" butonuna basar.<br>
+                    3. Sistem, seçilen ürün varyantının mevcut stok miktarını veritabanından asenkron olarak sorgular.<br>
+                    4. Stok miktarının istenen adede eşit veya büyük olduğu doğrulanır.<br>
+                    5. Sistem, seçilen ürünü kullanıcının sepet listesine ekler (sepette zaten varsa adedini günceller).<br>
+                    6. Sistem, ürünün rezerve edilme sayacını başlatır (15 dakikalık Redis TTL anahtarı oluşturur).<br>
+                    7. Sistem sepet ara toplamını, KDV tutarını ve kargo bedelini yeniden hesaplar.<br>
+                    8. Kullanıcı arayüzünde "Ürün Başarıyla Sepetinize Eklendi" bildirim kutusu gösterilir ve sağ üstteki sepet sayacı güncellenir.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Alternatif ve İstisnai Akışlar:</strong></td>
+                <td>
+                    <strong>A1 - Stok Yetersizliği / Tükendi Durumu (Adım 4'te):</strong><br>
+                    &nbsp;&nbsp;a) Kullanıcı butona bastığında stok 0 ise işlem durdurulur.<br>
+                    &nbsp;&nbsp;b) Ekranda "Seçtiğiniz ürünün stoğu az önce tükenmiştir." uyarısı gösterilir ve sepete ekleme engellenir.<br>
+                    <strong>A2 - Maksimum Adet Aşımı (Adım 4'te):</strong><br>
+                    &nbsp;&nbsp;a) Kullanıcı aynı üründen sepete 10 adetten fazla eklemek isterse sistem izin vermez.<br>
+                    &nbsp;&nbsp;b) "Bireysel alımlarda bir üründen en fazla 10 adet eklenebilir." uyarısı verilir.<br>
+                    <strong>A3 - Rezervasyon Zaman Aşımı (Adım 6 sonrasında):</strong><br>
+                    &nbsp;&nbsp;a) Kullanıcı 15 dakika boyunca satın alma adımına geçmezse Redis rezervasyon anahtarını düşürür.<br>
+                    &nbsp;&nbsp;b) Ürün sepetten silinmez ancak "Stok rezervasyon süreniz doldu, stok garantisi verilmemektedir" bilgisi belirir.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- UC-02 -->
+    <h2>KULLANIM SENARYOSU 2 (UC-02): Sanal POS ile 3D Secure Güvenli Ödeme ve Sipariş Onayı</h2>
+    <div class="use-case-box">
+        <table>
+            <tr><th colspan="2">UC-02: Sanal POS ile 3D Secure Güvenli Ödeme ve Sipariş Oluşturma</th></tr>
+            <tr><td style="width: 25%;"><strong>İlişkili Gereksinim:</strong></td><td style="width: 75%;">G05 & G06 (Must Have - Fonksiyonel Gereksinim)</td></tr>
+            <tr><td><strong>Aktörler:</strong></td><td>Birincil Aktör: Alıcı | İkincil Aktörler: Sanal POS Ödeme Ağ Geçidi (Iyzico/Banka), Finans Servisi</td></tr>
+            <tr><td><strong>Ön Koşullar:</strong></td><td>1. Kullanıcı sisteme giriş yapmış ve sepetinde en az bir ürün bulunmalıdır.<br>2. Kullanıcı teslimat ve fatura adresini seçmiş, mesafeli satış sözleşmesini onaylamış olmalıdır.</td></tr>
+            <tr><td><strong>Son Koşullar:</strong></td><td>1. Ödeme tutarı kullanıcının kredi kartından başarıyla tahsil edilir.<br>2. Kalıcı sipariş kaydı üretilir, rezerve stoklar kesin olarak stoktan düşülür ve onay e-postası yollanır.</td></tr>
+            <tr><td><strong>Tetikleyici:</strong></td><td>Kullanıcının ödeme ekranında kart bilgilerini girip "Siparişi Onayla ve Öde" butonuna tıklaması.</td></tr>
+            <tr>
+                <td><strong>Ana Başarı Akışı (Happy Path):</strong></td>
+                <td>
+                    1. Kullanıcı kredi kartı üzerindeki 16 haneli kart numarasını, son kullanma tarihini ve CVV kodunu girer.<br>
+                    2. Sistem, kartın BIN numarasından bankayı ve taksit seçeneklerini sorgular; kullanıcı varsa taksit seçer.<br>
+                    3. Kullanıcı "Ödemeyi Tamamla" butonuna basar.<br>
+                    4. Sistem arka planda PCI-DSS standartlarına uygun şifrelenmiş hash paketi oluşturarak Sanal POS API'sine "3D Secure Başlatma" isteği gönderir.<br>
+                    5. Kullanıcı bankanın güvenli 3D Secure SMS doğrulama sayfasına yönlendirilir.<br>
+                    6. Kullanıcı cep telefonuna gelen SMS tek kullanımlık şifresini (OTP) banka ekranına girip onaylar.<br>
+                    7. Banka işlemi onaylar ve platformun güvenli Callback API uç noktasına şifreli onay belirteci iletir.<br>
+                    8. Sistem dönen imzayı doğrular, ödeme tutarını hesaba işler ve "Sipariş Durumu = Onaylandı" olarak kaydeder.<br>
+                    9. Rezerve stoklar kalıcı olarak düşürülür, sepet boşaltılır ve kullanıcıya referans sipariş takip numarası gösterilir.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Alternatif ve İstisnai Akışlar:</strong></td>
+                <td>
+                    <strong>A1 - Yetersiz Bakiye veya Hatalı CVV (Adım 7'de):</strong><br>
+                    &nbsp;&nbsp;a) Banka "051 - Yetersiz Bakiye" veya "Hatalı Güvenlik Kodu" yanıtı döner.<br>
+                    &nbsp;&nbsp;b) Sistem işlemi durdurur, sipariş oluşturulmaz ve kullanıcıya kırmızı hata mesajı gösterilir.<br>
+                    <strong>A2 - SMS Şifresinin Yanlış Girilmesi veya Zaman Aşımı (Adım 6'da):</strong><br>
+                    &nbsp;&nbsp;a) Kullanıcı 3 dakika içinde SMS kodunu girmezse banka oturumu sonlandırır.<br>
+                    &nbsp;&nbsp;b) Sistem kullanıcıyı güvenle ödeme sayfasına geri döndürür, stok rezervasyonu korunur.<br>
+                    <strong>A3 - Ağ Kesintisi veya Callback Hatası (Adım 7-8'de):</strong><br>
+                    &nbsp;&nbsp;a) Banka parayı çektiği halde platforma dönüşte ağ koparsa, asenkron mutabakat servisi bankayı sorgular ve mükerrer çekimi engeller.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- UC-03 -->
+    <h2>KULLANIM SENARYOSU 3 (UC-03): Müşteri Sipariş İptali ve Otomatik Para İadesi</h2>
+    <div class="use-case-box">
+        <table>
+            <tr><th colspan="2">UC-03: Müşteri Sipariş İptali ve Otomatik Para İadesi / Stok Restorasyonu</th></tr>
+            <tr><td style="width: 25%;"><strong>İlişkili Gereksinim:</strong></td><td style="width: 75%;">G07 (Must Have - Fonksiyonel Gereksinim)</td></tr>
+            <tr><td><strong>Aktörler:</strong></td><td>Birincil Aktör: Alıcı | İkincil Aktörler: Sanal POS İade Servisi, Stok Yönetimi, Satıcı</td></tr>
+            <tr><td><strong>Ön Koşullar:</strong></td><td>1. Kullanıcının oluşturulmuş ve ödemesi tamamlanmış aktif bir siparişi bulunmalıdır.<br>2. Sipariş durumu "Kargoya Verildi" aşamasına geçmemiş olmalıdır ("Hazırlanıyor" veya "Onaylandı" durumunda olmalıdır).</td></tr>
+            <tr><td><strong>Son Koşullar:</strong></td><td>1. Sipariş statüsü "İptal Edildi"ye güncellenir.<br>2. Sanal POS API üzerinden karta iade işlemi başlatılır ve ürün stoğu otomatik 1 artırılarak sisteme geri kazandırılır.</td></tr>
+            <tr><td><strong>Tetikleyici:</strong></td><td>Kullanıcının "Siparişlerim" sayfasındaki ilgili sipariş için "Siparişi İptal Et" butonuna basması.</td></tr>
+            <tr>
+                <td><strong>Ana Başarı Akışı (Happy Path):</strong></td>
+                <td>
+                    1. Kullanıcı "Hesabım > Siparişlerim" sayfasına gider ve iptal etmek istediği siparişi seçer.<br>
+                    2. Kullanıcı "Siparişi İptal Et" butonuna tıklar.<br>
+                    3. Sistem siparişin güncel durumunu kontrol eder; henüz satıcı tarafından kargoya verilmediğini teyit eder.<br>
+                    4. Kullanıcıya açılır pencerede iptal gerekçesi sorulur (ör. "Yanlış beden seçtim", "Vazgeçtim"); kullanıcı gerekçeyi seçip onaylar.<br>
+                    5. Sistem veritabanında sipariş durumunu derhal "İptal İşlemi Başlatıldı" durumuna alır.<br>
+                    6. Finans servisi, orijinal ödeme işlem referans kodunu kullanarak Sanal POS API'sine otomatik "Refund / İptal" çağrısı gönderir.<br>
+                    7. Sanal POS sağlayıcısı iadenin başarıyla onaylandığını bildirir.<br>
+                    8. Sistem, sipariş içindeki ürünlerin stok miktarlarını satıcının envanter tablosunda otomatik olarak geri artırır (+1).<br>
+                    9. Siparişte kullanılan indirim kuponu varsa kupon müşterinin hesabına yeniden aktif edilerek tanımlanır.<br>
+                    10. Kullanıcıya SMS ve E-posta ile iptal dekontu ve iade bilgilendirmesi gönderilir.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Alternatif ve İstisnai Akışlar:</strong></td>
+                <td>
+                    <strong>A1 - Ürün Zaten Kargoya Verilmişse (Adım 3'te):</strong><br>
+                    &nbsp;&nbsp;a) Kullanıcı butona bastığında satıcı kargo barkodunu okutmuşsa sistem işlemi reddeder.<br>
+                    &nbsp;&nbsp;b) "Siparişiniz kargoya teslim edildiği için iptal edilemez. Ürün ulaştığında 14 gün içinde Kolay İade talebi açabilirsiniz." uyarısı verilir.<br>
+                    <strong>A2 - Banka İade API'sinde Geçici Ağ Kesintisi (Adım 6-7'de):</strong><br>
+                    &nbsp;&nbsp;a) Banka API'sine ulaşılamazsa işlem başarısız sayılmaz; sipariş "İade Kuyruğunda (Pending Refund)" statüsüne alınır.<br>
+                    &nbsp;&nbsp;b) Arka plan servisi (Hangfire / Quartz) her 15 dakikada bir otomatik yeniden dener ve başarıyla sonuçlandırır.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- KAYNAKLAR -->
+    <h1>KAYNAKLAR</h1>
+    <p>Bu araştırma ve analiz çalışmasının hazırlanmasında yararlanılan akademik kaynaklar, uluslararası standartlar ve resmi dokümantasyonlar:</p>
+    <ol>
+        <li><strong>Newman, S. (2021).</strong> <em>Building Microservices: Designing Fine-Grained Systems (2nd Edition).</em> O'Reilly Media.</li>
+        <li><strong>Fowler, M. (2014).</strong> <em>Microservices: A definition of this new architectural term.</em> martinfowler.com/articles/microservices.html (Erişim Tarihi: 26.10.2026)</li>
+        <li><strong>Sommerville, I. (2016).</strong> <em>Software Engineering (10th Edition).</em> Pearson Education Limited.</li>
+        <li><strong>Clegg, D., & Barker, R. (1994).</strong> <em>Case Method Fast-Track: A RAD Approach (MoSCoW Metodolojisinin Temelleri).</em> Addison-Wesley.</li>
+        <li><strong>Microsoft Learn. (2025).</strong> <em>Cloud Design Patterns: Prescriptive architecture guidance for building on Azure.</em> learn.microsoft.com/en-us/azure/architecture/patterns/ (Erişim Tarihi: 25.10.2026)</li>
+        <li><strong>Amazon Web Services (AWS). (2025).</strong> <em>Microservices on AWS: Architectural Principles and Patterns Whitepaper.</em> aws.amazon.com/microservices/ (Erişim Tarihi: 27.10.2026)</li>
+        <li><strong>Cockburn, A. (2000).</strong> <em>Writing Effective Use Cases (Agile Software Development Series).</em> Addison-Wesley Professional.</li>
+        <li><strong>Martin, R. C. (2017).</strong> <em>Clean Architecture: A Craftsman's Guide to Software Structure and Design.</em> Prentice Hall.</li>
+    </ol>
+
+    <div class="signature-box">
+        <div>
+            <em>Öğrenci Beyanı:</em><br>
+            Bu ödevde yer alan tüm açıklamalar, mimari analizler ve proje senaryoları<br>
+            kendi cümlelerim ve araştırmalarım doğrultusunda hazırlanmıştır.
+        </div>
+        <div style="text-align: right;">
+            <strong>Teslim Eden Öğrenci:</strong><br>
+            Hasan Ali YÜCEL<br>
+            <strong>Öğrenci No:</strong> 256001054<br>
+            <strong>İmza:</strong> ........................................<br>
+            <strong>Tarih:</strong> 29.10.2026
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
